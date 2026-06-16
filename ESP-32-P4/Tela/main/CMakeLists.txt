@@ -1,0 +1,24 @@
+idf_component_register(
+    SRCS
+        "source/main.c"
+        "source/display_manager.c"
+        "source/protocol.c"
+        "source/http_server.c"
+        "source/wifi_manager.c"
+    INCLUDE_DIRS
+        "header"
+    REQUIRES
+        nvs_flash
+        esp_wifi
+        esp_netif
+        esp_event
+        esp_http_server
+        esp_lcd
+        esp_driver_gpio
+        esp_hw_support
+        lvgl
+        json
+        freertos
+        esp_timer
+        espressif__esp_hosted
+)
