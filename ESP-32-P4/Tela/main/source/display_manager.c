@@ -26,17 +26,6 @@ static const char *TAG = "DISPLAY";
 static esp_lcd_panel_handle_t panel_handle = NULL;
 static lv_display_t          *lv_disp     = NULL;
 static SemaphoreHandle_t      lvgl_mutex  = NULL;
-static SemaphoreHandle_t      flush_sem   = NULL;
-
-static bool IRAM_ATTR flush_done_cb(esp_lcd_panel_handle_t panel,
-                                     esp_lcd_dpi_panel_event_data_t *edata,
-                                     void *user_ctx)
-{
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    xSemaphoreGiveFromISR(flush_sem, &xHigherPriorityTaskWoken);
-    if (xHigherPriorityTaskWoken) portYIELD_FROM_ISR();
-    return false;
-}
 
 static void lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
 {
@@ -44,7 +33,6 @@ static void lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px
                               area->x1, area->y1,
                               area->x2 + 1, area->y2 + 1,
                               px_map);
-    xSemaphoreTake(flush_sem, portMAX_DELAY);
     lv_display_flush_ready(disp);
 }
 
@@ -79,15 +67,25 @@ void display_unlock(void)
     xSemaphoreGive(lvgl_mutex);
 }
 
+// mostra barras de cor do hardware para testar se o painel fisico responde
+void display_test_pattern(void)
+{
+    ESP_LOGI(TAG, "Teste: barras verticais (3s)...");
+    esp_lcd_dpi_panel_set_pattern(panel_handle, MIPI_DSI_PATTERN_BAR_VERTICAL);
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    ESP_LOGI(TAG, "Teste: barras horizontais (3s)...");
+    esp_lcd_dpi_panel_set_pattern(panel_handle, MIPI_DSI_PATTERN_BAR_HORIZONTAL);
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    esp_lcd_dpi_panel_set_pattern(panel_handle, MIPI_DSI_PATTERN_NONE);
+    ESP_LOGI(TAG, "Teste de padrao concluido.");
+}
+
 void display_init(void)
 {
     ESP_LOGI(TAG, "Iniciando display JD9365 800x1280...");
 
     lvgl_mutex = xSemaphoreCreateMutex();
     configASSERT(lvgl_mutex);
-
-    flush_sem = xSemaphoreCreateBinary();
-    configASSERT(flush_sem);
 
     esp_ldo_channel_handle_t ldo_mipi_phy = NULL;
     esp_ldo_channel_config_t ldo_cfg = {
@@ -123,7 +121,7 @@ void display_init(void)
     esp_lcd_dpi_panel_config_t dpi_cfg = {
         .virtual_channel    = 0,
         .dpi_clk_src        = MIPI_DSI_DPI_CLK_SRC_DEFAULT,
-        .dpi_clock_freq_mhz = 15,
+        .dpi_clock_freq_mhz = 25,
         .pixel_format       = LCD_COLOR_PIXEL_FORMAT_RGB565,
         .num_fbs            = 0,
         .video_timing = {
@@ -155,13 +153,8 @@ void display_init(void)
     ESP_ERROR_CHECK(esp_lcd_new_panel_jd9365(mipi_dbi_io, &panel_dev_cfg, &panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
-
-    esp_lcd_dpi_panel_event_callbacks_t dpi_cbs = {
-        .on_color_trans_done = flush_done_cb,
-    };
-    ESP_ERROR_CHECK(esp_lcd_dpi_panel_register_event_callbacks(panel_handle, &dpi_cbs, NULL));
-
     ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
+
     gpio_set_level(LCD_BACKLIGHT_GPIO, 1);
     ESP_LOGI(TAG, "Backlight ligado!");
 
@@ -174,23 +167,18 @@ void display_init(void)
     void *buf1 = heap_caps_malloc(buf_size, MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
     void *buf2 = heap_caps_malloc(buf_size, MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
     if (!buf1 || !buf2) {
-        ESP_LOGE(TAG, "Falha ao alocar buffers!");
+        ESP_LOGE(TAG, "Falha ao alocar buffers (%zu bytes cada)!", buf_size);
         return;
     }
     lv_display_set_buffers(lv_disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
     ESP_LOGI(TAG, "Buffers: 2 x %zu bytes na DIRAM", buf_size);
 
-    // Fundo preto inicial
     lv_obj_t *scr = lv_display_get_screen_active(lv_disp);
     lv_obj_set_style_bg_color(scr, lv_color_make(0, 0, 0), 0);
     lv_obj_set_style_bg_opa(scr, LV_OPA_COVER, 0);
 
-    // tick no CPU1, handler no CPU1 — sem conflito com app_main no CPU0
     xTaskCreatePinnedToCore(lvgl_tick_task,    "lvgl_tick",    1024, NULL, 5, NULL, 1);
     xTaskCreatePinnedToCore(lvgl_handler_task, "lvgl_handler", 4096, NULL, 4, NULL, 1);
-
-    // Aguarda o handler fazer o primeiro flush
-    vTaskDelay(pdMS_TO_TICKS(500));
 
     ESP_LOGI(TAG, "Display pronto!");
 }
@@ -207,4 +195,49 @@ void display_set_bg_color(uint8_t r, uint8_t g, uint8_t b)
     }
     display_unlock();
     ESP_LOGI(TAG, "Cor: R=%d G=%d B=%d", r, g, b);
+}
+
+void display_motor_parar(void)
+{
+    if (lv_disp == NULL) return;
+    if (!display_lock(5000)) return;
+    lv_obj_t *scr = lv_display_get_screen_active(lv_disp);
+    if (scr) { lv_obj_set_style_bg_color(scr, lv_color_make(50, 50, 50), 0); lv_obj_invalidate(scr); }
+    display_unlock();
+}
+
+void display_motor_subir(void)
+{
+    if (lv_disp == NULL) return;
+    if (!display_lock(5000)) return;
+    lv_obj_t *scr = lv_display_get_screen_active(lv_disp);
+    if (scr) { lv_obj_set_style_bg_color(scr, lv_color_make(0, 60, 180), 0); lv_obj_invalidate(scr); }
+    display_unlock();
+}
+
+void display_motor_descer(void)
+{
+    if (lv_disp == NULL) return;
+    if (!display_lock(5000)) return;
+    lv_obj_t *scr = lv_display_get_screen_active(lv_disp);
+    if (scr) { lv_obj_set_style_bg_color(scr, lv_color_make(180, 80, 0), 0); lv_obj_invalidate(scr); }
+    display_unlock();
+}
+
+void display_motor_abrir(void)
+{
+    if (lv_disp == NULL) return;
+    if (!display_lock(5000)) return;
+    lv_obj_t *scr = lv_display_get_screen_active(lv_disp);
+    if (scr) { lv_obj_set_style_bg_color(scr, lv_color_make(0, 140, 60), 0); lv_obj_invalidate(scr); }
+    display_unlock();
+}
+
+void display_motor_fechar(void)
+{
+    if (lv_disp == NULL) return;
+    if (!display_lock(5000)) return;
+    lv_obj_t *scr = lv_display_get_screen_active(lv_disp);
+    if (scr) { lv_obj_set_style_bg_color(scr, lv_color_make(180, 0, 0), 0); lv_obj_invalidate(scr); }
+    display_unlock();
 }

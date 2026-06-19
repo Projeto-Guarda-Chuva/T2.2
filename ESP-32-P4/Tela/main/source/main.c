@@ -10,6 +10,7 @@
 #include "http_server.h"
 #include "display_manager.h"
 
+
 static const char *TAG = "MAIN";
 
 static void on_got_ip(void *arg, esp_event_base_t base, int32_t id, void *data)
@@ -21,6 +22,7 @@ static void on_got_ip(void *arg, esp_event_base_t base, int32_t id, void *data)
 static void display_task(void *arg)
 {
     display_init();
+    display_test_pattern();
     display_set_bg_color(255, 255, 255);
     vTaskDelete(NULL);
 }

@@ -1,7 +1,0 @@
-[0;33m--- esp-idf-monitor 1.9.0 on /dev/ttyUSB0 115200[0m
-[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H[0m
-[0m--- 0x4000dec4: [0;33mtransport_drv_sta_tx[0m[0m at [0;32m/home/diogo/Documents/Uni/ODS/ESP-32_P4/managed_components/espressif__esp_hosted/host/drivers/transport/transport_drv.c[0m[0m:[1;31m216[0m
-[0m--- 0x4001d5d6: [0;33mesp_wifi_remote_channel_rx[0m[0m at [0;32m/home/diogo/Documents/Uni/ODS/ESP-32_P4/managed_components/espressif__esp_wifi_remote/esp_wifi_remote_net.c[0m[0m:[1;31m19[0m
-[0m--- 0x4000de0c: [0;33mtransport_drv_ap_tx[0m[0m at [0;32m/home/diogo/Documents/Uni/ODS/ESP-32_P4/managed_components/espressif__esp_hosted/host/drivers/transport/transport_drv.c[0m[0m:[1;31m246[0m
-[0m--- 0x4001d5d6: [0;33mesp_wifi_remote_channel_rx[0m[0m at [0;32m/home/diogo/Documents/Uni/ODS/ESP-32_P4/managed_components/espressif__esp_wifi_remote/esp_wifi_remote_net.c[0m[0m:[1;31m19[0m
-[0m

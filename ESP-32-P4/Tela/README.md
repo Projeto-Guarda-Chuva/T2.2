@@ -5,7 +5,9 @@
 
 ```bash
 . ~/esp/esp-idf/export.sh
-cd ~/Documents/Uni/ODS/ESP-32_P4/
+
+# apagar flash
+idf.py erase-flash
 ```
 
 ## Compilar

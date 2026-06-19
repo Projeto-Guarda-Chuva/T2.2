@@ -1,13 +1,13 @@
 # Target labels
  bootloader
 # Source files and their labels
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/CMakeFiles/bootloader
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/CMakeFiles/bootloader.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/CMakeFiles/bootloader-complete.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
-/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/CMakeFiles/bootloader
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/CMakeFiles/bootloader.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/CMakeFiles/bootloader-complete.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

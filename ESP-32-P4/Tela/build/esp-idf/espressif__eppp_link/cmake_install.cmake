@@ -1,4 +1,4 @@
-# Install script for directory: /home/diogo/Documents/Uni/ODS/ESP-32_P4/managed_components/espressif__eppp_link
+# Install script for directory: /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/managed_components/espressif__eppp_link
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/diogo/Documents/Uni/ODS/ESP-32_P4/build/esp-idf/espressif__eppp_link/install_local_manifest.txt"
+  file(WRITE "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/esp-idf/espressif__eppp_link/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

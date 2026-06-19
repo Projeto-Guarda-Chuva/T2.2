@@ -1,0 +1,81 @@
+[1/10] Performing build step for 'bootloader'
+[1/1] cd /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader/esp-idf/esptool_py && /home/diogo/.espressif/python_env/idf5.4_py3.14_env/bin/python /home/diogo/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x2000 /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader/bootloader.bin
+Bootloader binary size 0x56f0 bytes. 0x910 bytes (9%) free.
+[2/10] No install step for 'bootloader'
+[3/10] Completed 'bootloader'
+[4/10] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/source/display_manager.c.obj
+[5/10] Linking C static library esp-idf/main/libmain.a
+[6/10] Generating ld/sections.ld
+[7/10] Linking CXX executable controle_esp32_p4.elf
+[8/10] Generating binary image from built executable
+esptool.py v4.11.0
+Creating esp32p4 image...
+Merged 3 ELF sections
+Successfully created esp32p4 image.
+Generated /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/controle_esp32_p4.bin
+[9/10] cd /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/esp-idf/esptool_py && /home/diogo/.espressif/python_env/idf5.4_py3.14_env/bin/python /home/diogo/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/partition_table/partition-table.bin /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/controle_esp32_p4.bin
+controle_esp32_p4.bin binary size 0xee180 bytes. Smallest app partition is 0x300000 bytes. 0x211e80 bytes (69%) free.
+[9/10] cd /home/diogo/esp/esp-idf/components/esptool_py && /usr/bin/cmake -D IDF_PATH=/home/diogo/esp/esp-idf -D "SERIAL_TOOL=/home/diogo/.espressif/python_env/idf5.4_py3.14_env/bin/python;;/home/diogo/esp/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32p4" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D WORKING_DIRECTORY=/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build -P /home/diogo/esp/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool.py --chip esp32p4 -p /dev/ttyUSB0 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 16MB 0x2000 bootloader/bootloader.bin 0x10000 controle_esp32_p4.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.11.0
+Serial port /dev/ttyUSB0
+Connecting....
+Chip is ESP32-P4 (revision v1.0)
+Features: High-Performance MCU
+Crystal is 40MHz
+MAC: 30:ed:a0:e1:9f:95
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00002000 to 0x00007fff...
+Flash will be erased from 0x00010000 to 0x000fefff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+SHA digest in image updated
+Compressed 22256 bytes to 13683...
+Writing at 0x00002000... (100 %)
+Wrote 22256 bytes (13683 compressed) at 0x00002000 in 0.7 seconds (effective 244.0 kbit/s)...
+Hash of data verified.
+Compressed 975232 bytes to 499783...
+Writing at 0x00010000... (3 %)
+Writing at 0x0001d80e... (6 %)
+Writing at 0x0002a416... (9 %)
+Writing at 0x00036483... (12 %)
+Writing at 0x0003f0fd... (16 %)
+Writing at 0x00045bce... (19 %)
+Writing at 0x0004d936... (22 %)
+Writing at 0x0005734e... (25 %)
+Writing at 0x0005edcb... (29 %)
+Writing at 0x000657fc... (32 %)
+Writing at 0x0006b97c... (35 %)
+Writing at 0x000724a6... (38 %)
+Writing at 0x000792c4... (41 %)
+Writing at 0x0007f426... (45 %)
+Writing at 0x00085411... (48 %)
+Writing at 0x0008b86f... (51 %)
+Writing at 0x00091c66... (54 %)
+Writing at 0x0009a5b0... (58 %)
+Writing at 0x000a4449... (61 %)
+Writing at 0x000ab523... (64 %)
+Writing at 0x000b2770... (67 %)
+Writing at 0x000b9a30... (70 %)
+Writing at 0x000c033f... (74 %)
+Writing at 0x000c778b... (77 %)
+Writing at 0x000ce81a... (80 %)
+Writing at 0x000d56ca... (83 %)
+Writing at 0x000dbdcc... (87 %)
+Writing at 0x000e3fe1... (90 %)
+Writing at 0x000eb4ec... (93 %)
+Writing at 0x000f203e... (96 %)
+Writing at 0x000f92c1... (100 %)
+Wrote 975232 bytes (499783 compressed) at 0x00010000 in 14.0 seconds (effective 557.1 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 105...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (105 compressed) at 0x00008000 in 0.1 seconds (effective 401.4 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
