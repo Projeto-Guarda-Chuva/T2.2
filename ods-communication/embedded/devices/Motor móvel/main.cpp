@@ -75,7 +75,6 @@ void setup(void)
 void loop(void)
 {
     if (WiFi.status() != WL_CONNECTED) {
-        Serial.println("WiFi perdido, reconectando...");
         wifi_conectar();
     }
 
@@ -112,8 +111,10 @@ void handle_command(void)
             server.send(200, "text/plain", "Ja esta subindo.");
             return;
         }
-        if (state == DESCENDO)
+        if (state == DESCENDO) {
             motor_parar();   /* para antes de inverter */
+            delay(400);      /* tempo morto de segurança para desaceleração */
+        }
         motor_subir();
 
     /* ── D : Descer ─────────────────────────────────────────── */
@@ -127,8 +128,10 @@ void handle_command(void)
             server.send(200, "text/plain", "Ja esta descendo.");
             return;
         }
-        if (state == SUBINDO)
+        if (state == SUBINDO) {
             motor_parar();   /* para antes de inverter */
+            delay(400);      /* tempo morto de segurança para desaceleração */
+        }
         motor_descer();
 
     /* ── P : Parar ──────────────────────────────────────────── */
@@ -245,19 +248,27 @@ void verificar_fins_de_curso(void)
 
 void wifi_conectar(void)
 {
-    if (WiFi.status() == WL_CONNECTED)
+    static bool ja_conectado = false;
+
+    if (WiFi.status() == WL_CONNECTED) {
+        if (!ja_conectado) {
+            Serial.println("\nConectado!");
+            Serial.print("IP do Motor Movel: ");
+            Serial.println(WiFi.localIP());
+            ja_conectado = true;
+        }
         return;
-
-    WiFi.begin(SSID);
-    /* WiFi.begin(SSID, PASS); */
-
-    Serial.print("Conectando ao WiFi");
-    while (WiFi.status() != WL_CONNECTED) {
-        Serial.print(".");
-        delay(500);
     }
 
-    Serial.println("\nConectado!");
-    Serial.print("IP do Motor Movel: ");
-    Serial.println(WiFi.localIP());
+    // Se o WiFi desconectou, reseta o flag para que imprima o IP quando reconectar
+    ja_conectado = false;
+
+    static unsigned long last_attempt = 0;
+    // Tenta reconectar a cada 10 segundos de forma assíncrona, sem travar o loop
+    if (millis() - last_attempt > 10000 || last_attempt == 0) {
+        Serial.println("\nTentando conectar ao WiFi...");
+        WiFi.begin(SSID);
+        /* WiFi.begin(SSID, PASS); */
+        last_attempt = millis();
+    }
 }

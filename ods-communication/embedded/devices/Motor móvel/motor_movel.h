@@ -6,7 +6,7 @@
 #define RPWM        D5   /* PWM sentido SUBIR                    */
 #define LPWM        D6   /* PWM sentido DESCER                   */
 #define FCS_PIN     D7   /* Fim de curso Superior (NC)           */
-#define FCI_PIN     D8   /* Fim de curso Inferior (NC)           */
+#define FCI_PIN     D2   /* Fim de curso Inferior (NC) - Pino Seguro */
 
 /* ── Parâmetros ────────────────────────────────────────────── */
 #define VELOCIDADE  200  /* 0-255  (~78 % PWM)                  */
