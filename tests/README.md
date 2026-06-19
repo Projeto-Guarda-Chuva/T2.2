@@ -18,10 +18,16 @@ Os testes estão organizados da seguinte forma:
   - valida o comportamento do script Python auxiliar utilizado para envio de comandos HTTP à placa
 - `tests/c/test_protocol.c`
   - valida a interpretação de comandos JSON e o mapeamento de ações em `protocol.c`
-- `tests/c/test_processadora_modules.c`
-  - valida a inicialização dos módulos `monitor` e `print`
-- `tests/c/test_http_comm.c`
-  - valida a interface pública do componente `http_comm`
+- `tests/c/test_http_server.c`
+  - valida a inicialização do servidor HTTP da tela e o encaminhamento de comandos recebidos
+- `tests/c/test_lighting_manager.c`
+  - valida a inicialização e aplicação de cor/intensidade no módulo de iluminação
+- `tests/c/test_wifi_manager.c`
+  - valida a inicialização do fluxo Wi-Fi em modo estação e a configuração das credenciais
+- `tests/c/test_tela_main.c`
+  - valida a orquestração principal da aplicação da tela, incluindo NVS, task de display, espera de Wi-Fi e inicialização do servidor HTTP
+- `tests/c/test_led_main.c`
+  - valida a orquestração principal da aplicação de iluminação e a sequência de cores aplicada
 - `tests/c/stubs/`
   - contém stubs e implementações auxiliares usados para isolar dependências externas
 
@@ -31,7 +37,10 @@ Considerando a natureza embarcada da camada, a suíte adota isolamento por stubs
 
 - componentes do ESP-IDF
 - primitivas do FreeRTOS
-- comunicação HTTP cliente/servidor
+- serviços HTTP embarcados
+- stack de Wi-Fi e NVS do ESP-IDF
+- driver de fita LED
+- chamadas entre módulos da aplicação
 - funções auxiliares de runtime
 - dependências de parsing JSON
 
@@ -51,6 +60,9 @@ O script executa, em sequência:
 
 1. os testes unitários em Python
 2. a compilação e execução dos testes unitários em C no ambiente host
+
+Durante a execução, os binários temporários são gerados em `tests/build/` apenas para a
+sessão corrente e removidos automaticamente ao final do script.
 
 ## Escopo e limitações
 

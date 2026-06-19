@@ -9,8 +9,10 @@ from unittest.mock import patch
 
 
 MODULE_PATH = (
-    Path(__file__).resolve().parents[2] / "ESP-32-P4" / "Tela" / "Teste" / "testar_placa.py"
+    Path(__file__).resolve().parents[2] / "Iluminacao" / "Tela" / "Teste" / "testar_placa.py"
 )
+
+sys.dont_write_bytecode = True
 
 
 def load_module(fake_requests: types.ModuleType):

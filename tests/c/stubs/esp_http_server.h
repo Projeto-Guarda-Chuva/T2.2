@@ -33,6 +33,7 @@ struct httpd_req {
 esp_err_t httpd_start(httpd_handle_t *handle, httpd_config_t *config);
 esp_err_t httpd_register_uri_handler(httpd_handle_t handle, const httpd_uri_t *uri_handler);
 esp_err_t httpd_resp_send(httpd_req_t *req, const char *buf, int buf_len);
+esp_err_t httpd_resp_sendstr(httpd_req_t *req, const char *str);
 esp_err_t httpd_resp_send_err(httpd_req_t *req, int error, const char *message);
 esp_err_t httpd_resp_send_500(httpd_req_t *req);
 int httpd_req_recv(httpd_req_t *req, char *buf, size_t buf_len);
