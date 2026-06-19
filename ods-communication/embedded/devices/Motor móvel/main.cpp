@@ -33,7 +33,14 @@ static const char *SSID = "ESP_F85DED";
 static ESP8266WebServer server(80);
 
 /* ── Estado global ─────────────────────────────────────────── */
-static estado_t state = PARADO;
+static volatile estado_t state = PARADO;
+
+// --- Definição de Comandos (Mudar para números futuramente) ---
+const String CMD_SUBIR = "S";
+const String CMD_DESCER = "D";
+const String CMD_PARAR = "P";
+const String CMD_FCS = "FCS";
+const String CMD_FCI = "FCI";
 
 /* ============================================================
  * SETUP
@@ -101,7 +108,7 @@ void handle_command(void)
     Serial.println(cmd);
 
     /* ── S : Subir ──────────────────────────────────────────── */
-    if (cmd == "S") {
+    if (cmd == CMD_SUBIR) {
         if (fim_superior()) {
             server.send(200, "text/plain",
                 "Ignorado: fim de curso superior ja acionado.");
@@ -118,7 +125,7 @@ void handle_command(void)
         motor_subir();
 
     /* ── D : Descer ─────────────────────────────────────────── */
-    } else if (cmd == "D") {
+    } else if (cmd == CMD_DESCER) {
         if (fim_inferior()) {
             server.send(200, "text/plain",
                 "Ignorado: fim de curso inferior ja acionado.");
@@ -135,17 +142,17 @@ void handle_command(void)
         motor_descer();
 
     /* ── P : Parar ──────────────────────────────────────────── */
-    } else if (cmd == "P") {
+    } else if (cmd == CMD_PARAR) {
         motor_parar();
 
     /* ── FCS : Fim de curso Superior (software) ─────────────── */
-    } else if (cmd == "FCS") {
+    } else if (cmd == CMD_FCS) {
         if (state == SUBINDO)
             motor_parar();
         Serial.println("FCS recebido por software.");
 
     /* ── FCI : Fim de curso Inferior (software) ─────────────── */
-    } else if (cmd == "FCI") {
+    } else if (cmd == CMD_FCI) {
         if (state == DESCENDO)
             motor_parar();
         Serial.println("FCI recebido por software.");
