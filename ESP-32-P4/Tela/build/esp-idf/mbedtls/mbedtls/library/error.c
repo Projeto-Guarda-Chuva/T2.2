@@ -1,1 +1,0 @@
-/home/diogo/esp/esp-idf/components/mbedtls/mbedtls/library/error.c
