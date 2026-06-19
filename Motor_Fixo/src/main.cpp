@@ -25,10 +25,10 @@ volatile pulse_state pulseState = PULSE_IDLE; // volatile
 volatile unsigned long pulseStartUs = 0;      // volatile
 const unsigned long PULSE_WIDTH_US = 500;
 
-// --- Definição de Comandos (Mudar para números futuramente) ---
-const String CMD_OPEN  = "A";
-const String CMD_CLOSE = "F";
-const String CMD_STOP  = "STOP";
+// --- Definição de Comandos ---
+#define CMD_OPEN  "21"
+#define CMD_CLOSE "22"
+#define CMD_STOP  "20"
 
 // Prototipos
 void connect_WiFi();
@@ -160,10 +160,11 @@ void close_gate() {
 
 void handle_command() {
     if (!server.hasArg("plain")) {
-        server.send(400, "text/plain", "Corpo vazio.");
+        server.send(400, "text/plain", "Corpo vazio. Use 20, 21 ou 22.");
         return;
     }
     String cmd = server.arg("plain");
+    cmd.trim();
 
     // Garantir atomicidade nas mudanças de estado
     noInterrupts();
@@ -175,7 +176,7 @@ void handle_command() {
         stop_gate();
     } else {
         interrupts();
-        server.send(400, "text/plain", "Comando inválido.");
+        server.send(400, "text/plain", "Comando inválido. Use 20, 21 ou 22.");
         return;
     }
     interrupts();

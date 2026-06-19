@@ -6,11 +6,11 @@
  *   POST /command   (Content-Type: text/plain)
  *        Corpo  │ Ação
  *        ───────┼──────────────────────────────────────────────
- *        "S"    │ Subir
- *        "D"    │ Descer
- *        "P"    │ Parar
- *        "FCS"  │ Fim de curso Superior (enviado pela camada superior)
- *        "FCI"  │ Fim de curso Inferior (enviado pela camada superior)
+ *        "31"   │ Subir
+ *        "32"   │ Descer
+ *        "30"   │ Parar
+ *        "34"   │ Fim de curso Superior (enviado pela camada superior)
+ *        "35"   │ Fim de curso Inferior (enviado pela camada superior)
  *
  * ── Lógica de segurança ─────────────────────────────────────
  *   • Não sobe  se FCS já estiver acionado.
@@ -35,12 +35,12 @@ static ESP8266WebServer server(80);
 /* ── Estado global ─────────────────────────────────────────── */
 static volatile estado_t state = PARADO;
 
-// --- Definição de Comandos (Mudar para números futuramente) ---
-const String CMD_SUBIR = "S";
-const String CMD_DESCER = "D";
-const String CMD_PARAR = "P";
-const String CMD_FCS = "FCS";
-const String CMD_FCI = "FCI";
+// --- Definição de Comandos ---
+#define CMD_SUBIR "31"
+#define CMD_DESCER "32"
+#define CMD_PARAR  "30"
+#define CMD_FCS    "34"
+#define CMD_FCI    "35"
 
 /* ============================================================
  * SETUP
@@ -97,7 +97,7 @@ void handle_command(void)
 {
     if (!server.hasArg("plain")) {
         server.send(400, "text/plain",
-            "Corpo vazio. Use S, D, P, FCS ou FCI.");
+            "Corpo vazio. Use 31, 32, 30, 34 ou 35.");
         return;
     }
 
@@ -107,7 +107,7 @@ void handle_command(void)
     Serial.print("Comando recebido: ");
     Serial.println(cmd);
 
-    /* ── S : Subir ──────────────────────────────────────────── */
+    /* ── 31 : Subir ─────────────────────────────────────────── */
     if (cmd == CMD_SUBIR) {
         if (fim_superior()) {
             server.send(200, "text/plain",
@@ -124,7 +124,7 @@ void handle_command(void)
         }
         motor_subir();
 
-    /* ── D : Descer ─────────────────────────────────────────── */
+    /* ── 32 : Descer ────────────────────────────────────────── */
     } else if (cmd == CMD_DESCER) {
         if (fim_inferior()) {
             server.send(200, "text/plain",
@@ -141,17 +141,17 @@ void handle_command(void)
         }
         motor_descer();
 
-    /* ── P : Parar ──────────────────────────────────────────── */
+    /* ── 33 : Parar ─────────────────────────────────────────── */
     } else if (cmd == CMD_PARAR) {
         motor_parar();
 
-    /* ── FCS : Fim de curso Superior (software) ─────────────── */
+    /* ── 34 : Fim de curso Superior (software) ──────────────── */
     } else if (cmd == CMD_FCS) {
         if (state == SUBINDO)
             motor_parar();
         Serial.println("FCS recebido por software.");
 
-    /* ── FCI : Fim de curso Inferior (software) ─────────────── */
+    /* ── 35 : Fim de curso Inferior (software) ──────────────── */
     } else if (cmd == CMD_FCI) {
         if (state == DESCENDO)
             motor_parar();
@@ -160,7 +160,7 @@ void handle_command(void)
     /* ── Comando inválido ───────────────────────────────────── */
     } else {
         server.send(400, "text/plain",
-            "Comando invalido. Use S, D, P, FCS ou FCI.");
+            "Comando invalido. Use 31, 32, 30, 34 ou 35.");
         return;
     }
 
