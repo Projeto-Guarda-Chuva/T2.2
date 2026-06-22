@@ -10,18 +10,18 @@ if(NOT EXISTS "/home/diogo/esp/esp-idf/components/bootloader/subproject")
   file(MAKE_DIRECTORY "/home/diogo/esp/esp-idf/components/bootloader/subproject")
 endif()
 file(MAKE_DIRECTORY
-  "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader"
-  "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix"
-  "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/tmp"
-  "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp"
-  "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src"
-  "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp"
+  "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader"
+  "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader-prefix"
+  "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader-prefix/tmp"
+  "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader-prefix/src/bootloader-stamp"
+  "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader-prefix/src"
+  "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
 endif()

@@ -1,4 +1,4 @@
-/* * Data converted from /home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 #if !defined (__APPLE__) && !defined (__linux__)

@@ -1,0 +1,931 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x1 (POWERON),boot:0x30f (SPI_FAST_FLASH_BOOT)
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x162c
+load:0x4ff2abd0,len:0xd70
+load:0x4ff2cbd0,len:0x32fc
+entry 0x4ff2abda
+[0;32mI (25) boot: ESP-IDF v5.4 2nd stage bootloader[0m
+[0;32mI (26) boot: compile time Jun 20 2026 15:46:59[0m
+[0;32mI (26) boot: Multicore bootloader[0m
+[0;32mI (27) boot: chip revision: v1.0[0m
+[0;32mI (28) boot: efuse block revision: v0.3[0m
+[0;32mI (32) boot.esp32p4: SPI Speed      : 80MHz[0m
+[0;32mI (36) boot.esp32p4: SPI Mode       : DIO[0m
+[0;32mI (40) boot.esp32p4: SPI Flash Size : 16MB[0m
+[0;32mI (43) boot: Enabling RNG early entropy source...[0m
+[0;32mI (48) boot: Partition Table:[0m
+[0;32mI (51) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (57) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (70) boot:  2 factory          factory app      00 00 00010000 00300000[0m
+[0;32mI (78) boot: End of partition table[0m
+[0;32mI (80) esp_image: segment 0: paddr=00010020 vaddr=400b0020 size=2d6bch (186044) map[0m
+[0;32mI (119) esp_image: segment 1: paddr=0003d6e4 vaddr=30100000 size=00068h (   104) load[0m
+[0;32mI (121) esp_image: segment 2: paddr=0003d754 vaddr=4ff00000 size=028c4h ( 10436) load[0m
+[0;32mI (126) esp_image: segment 3: paddr=00040020 vaddr=40000020 size=acdbch (708028) map[0m
+[0;32mI (249) esp_image: segment 4: paddr=000ecde4 vaddr=4ff028c4 size=0eb74h ( 60276) load[0m
+[0;32mI (262) esp_image: segment 5: paddr=000fb960 vaddr=4ff11480 size=02ad4h ( 10964) load[0m
+[0;32mI (270) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (270) boot: Disabling RNG early entropy source...[0m
+[0;32mI (281) hex_psram: vendor id    : 0x0d (AP)[0m
+[0;32mI (281) hex_psram: Latency      : 0x01 (Fixed)[0m
+[0;32mI (281) hex_psram: DriveStr.    : 0x00 (25 Ohm)[0m
+[0;32mI (282) hex_psram: dev id       : 0x03 (generation 4)[0m
+[0;32mI (287) hex_psram: density      : 0x07 (256 Mbit)[0m
+[0;32mI (291) hex_psram: good-die     : 0x06 (Pass)[0m
+[0;32mI (295) hex_psram: SRF          : 0x02 (Slow Refresh)[0m
+[0;32mI (300) hex_psram: BurstType    : 0x00 ( Wrap)[0m
+[0;32mI (304) hex_psram: BurstLen     : 0x03 (2048 Byte)[0m
+[0;32mI (309) hex_psram: BitMode      : 0x01 (X16 Mode)[0m
+[0;32mI (313) hex_psram: Readlatency  : 0x02 (10 cycles@Fixed)[0m
+[0;32mI (318) hex_psram: DriveStrength: 0x00 (1/1)[0m
+[0;32mI (322) esp_psram: Found 32MB PSRAM device[0m
+[0;32mI (326) esp_psram: Speed: 20MHz[0m
+[0;32mI (329) hex_psram: psram CS IO is dedicated[0m
+[0;32mI (333) cpu_start: Multicore app[0m
+[0;32mI (4130) esp_psram: SPI SRAM memory test OK[0m
+[0;32mI (4139) cpu_start: Pro cpu start user code[0m
+[0;32mI (4140) cpu_start: cpu freq: 360000000 Hz[0m
+[0;32mI (4140) app_init: Application information:[0m
+[0;32mI (4140) app_init: Project name:     controle_esp32_p4[0m
+[0;32mI (4145) app_init: App version:      9b6dca3-dirty[0m
+[0;32mI (4149) app_init: Compile time:     Jun 20 2026 15:45:31[0m
+[0;32mI (4154) app_init: ELF file SHA256:  5c9709015...[0m
+[0;32mI (4159) app_init: ESP-IDF:          v5.4[0m
+[0;32mI (4163) efuse_init: Min chip rev:     v0.1[0m
+[0;32mI (4166) efuse_init: Max chip rev:     v1.99 [0m
+[0;32mI (4171) efuse_init: Chip rev:         v1.0[0m
+[0;32mI (4175) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (4181) heap_init: At 4FF267E0 len 000147E0 (81 KiB): RAM[0m
+[0;32mI (4186) heap_init: At 4FF3AFC0 len 00004BF0 (18 KiB): RAM[0m
+[0;32mI (4191) heap_init: At 4FF40000 len 00060000 (384 KiB): RAM[0m
+[0;32mI (4197) heap_init: At 50108080 len 00007F80 (31 KiB): RTCRAM[0m
+[0;32mI (4202) heap_init: At 30100068 len 00001F98 (7 KiB): TCM[0m
+[0;32mI (4207) esp_psram: Adding pool of 32768K of PSRAM memory to heap allocator[0m
+[0;32mI (4215) spi_flash: detected chip: generic[0m
+[0;32mI (4218) spi_flash: flash io: dio[0m
+[0;32mI (4221) host_init: ESP Hosted : Host chip_ip[18][0m
+[0;32mI (4257) H_API: ESP-Hosted starting. Hosted_Tasks: prio:23, stack: 5120 RPC_task_stack: 5120[0m
+sdio_mempool_create free:33666032 min-free:33666032 lfb-def:33030144 lfb-8bit:33030144
+
+[0;32mI (4263) gpio: GPIO[18]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (4271) gpio: GPIO[19]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (4279) gpio: GPIO[14]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (4287) gpio: GPIO[15]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (4296) gpio: GPIO[16]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (4304) gpio: GPIO[17]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (4313) H_API: ** add_esp_wifi_remote_channels **[0m
+[0;32mI (4317) transport: Add ESP-Hosted channel IF[1]: S[0] Tx[0x4000dec4] Rx[0x4001d5d6][0m
+[0;32mI (4325) transport: Add ESP-Hosted channel IF[2]: S[0] Tx[0x4000de0c] Rx[0x4001d5d6][0m
+[0;32mI (4333) main_task: Started on CPU0[0m
+[0;32mI (4343) esp_psram: Reserving pool of 32K of internal memory for DMA/internal allocations[0m
+[0;32mI (4343) main_task: Calling app_main()[0m
+[0;32mI (4343) MAIN: Iniciando Sistema de Controle ESP32-P4[0m
+[0;32mI (4353) DISPLAY: Iniciando display JD9365 800x1280...[0m
+[0;32mI (4353) gpio: GPIO[23]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (4363) gpio: GPIO[27]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (4533) transport: Attempt connection with slave: retry[0][0m
+[0;32mI (4533) transport: Reset slave using GPIO[54][0m
+[0;32mI (4533) os_wrapper_esp: GPIO [54] configured[0m
+[0;32mI (4533) gpio: GPIO[54]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (4653) jd9365: LCD ID: 93 65 04[0m
+[0;32mI (4773) DISPLAY: Backlight ligado![0m
+[0;32mI (4773) DISPLAY: Buffers: 2 x 160000 bytes na DIRAM (double-buffer DMA)[0m
+[0;32mI (4773) DISPLAY: Display pronto![0m
+[0;32mI (4773) DISPLAY: Cor definida: R=255 G=0 B=255[0m
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+[0;32mI (5733) sdio_wrapper: SDIO master: Slot 1, Data-Lines: 4-bit Freq(KHz)[40000 KHz][0m
+[0;32mI (5733) sdio_wrapper: GPIOs: CLK[18] CMD[19] D0[14] D1[15] D2[16] D3[17] Slave_Reset[54][0m
+[0;32mI (5733) sdio_wrapper: Queues: Tx[20] Rx[20] SDIO-Rx-Mode[1][0m
+[0;32mI (5733) H_SDIO_DRV: Starting SDIO process rx task[0m
+[0;32mI (5773) gpio: GPIO[15]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (5773) gpio: GPIO[17]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+Name: 
+Type: SDIO
+Speed: 40.00 MHz (limit: 4E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+0.00 MHz)
+Size: 0MB
+CSD: ver=1, sector_size=0, capacity=0 read_bl_len=0
+SCR: sd_spec=0, bus_width=0
+TUPLE: DEVICE, size: 3: D9 01 FF 
+TUPLE: MANFID, size: 4
+  MANF: 0092, CARD: 6666
+TUPLE: FUNCID, size: 2: 0C 00 
+TUPLE: FUNCE, size: 4: 00 00 02 32 
+TUPLE: CONFIG, size: 5: 01 01 00 02 07 
+TUPLE: CFTABLE_ENTRY, size: 8
+  INDX: C1, Intface: 1, Default: 1, Conf-Entry-Num: 1
+  IF: 41
+  FS: 30, misc: 0, mem_space: 1, irq: 1, io_space: 0, timing: 0, power: 0
+  IR: 30, mask: 1,   IRQ: FF FF
+  LEN: FFFF
+TUPLE: END
+[0;32mI (5833) sdio_wrapper: Function 0 Blocksize: 512[0m
+[0;32mI (5833) sdio_wrapper: Function 1 Blocksize: 512[0m
+[0;32mI (5843) H_SDIO_DRV: SDIO Host operating in STREAMING MODE[0m
+[0;32mI (5843) H_SDIO_DRV: generate slave intr[0m
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+[0;32mI (6013) transport: Received INIT event from ESP32 peripheral[0m
+[0;32mI (6013) transport: EVENT: 12[0m
+[0;32mI (6013) transport: EVENT: 11[0m
+[0;32mI (6013) transport: capabilities: 0xd[0m
+[0;32mI (6023) transport: Features supported are:[0m
+[0;32mI (6023) transport: 	 * WLAN[0m
+[0;32mI (6023) transport: 	   - HCI over SDIO[0m
+[0;32mI (6033) transport: 	   - BLE only[0m
+[0;32mI (6033) transport: EVENT: 13[0m
+[0;32mI (6033) transport: ESP board type is : 13 [0m
+
+[0;32mI (6043) transport: Base transport is set-up[0m
+
+[0;32mI (6043) transport: Slave chip Id[12][0m
+[0;32mI (6043) hci_stub_drv: Host BT Support: Disabled[0m
+[0;32mI (6053) H_SDIO_DRV: Received INIT event[0m
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+[0;32mI (6873) H_API: esp_wifi_remote_connect[0m
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+[0;32mI (6903) WIFI: Conectando ao Wi-Fi...[0m
+[0;32mI (6903) MAIN: Aguardando Wi-Fi[0m
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+[0;32mI (10613) esp_wifi_remote: esp_wifi_internal_reg_rxcb: sta: 0x4007884e[0m
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+[0;32mI (11653) esp_netif_handlers: sta ip: 192.168.76.27, mask: 255.255.254.0, gw: 192.168.76.1[0m
+[0;32mI (11653) MAIN: ===========================================[0m
+[0;32mI (11653) MAIN:   Wi-Fi Conectado! IP: 192.168.76.27[0m
+[0;32mI (11653) MAIN: =E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens[0m
+==========================================
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+[0;32mI (14903) HTTP_SERVER: Servidor rodando na porta 80[0m
+[0;32mI (14903) MAIN: Sistema pronto! Aguardando comandos[0m
+[0;32mI (14903) main_task: Returned from app_main()[0m
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens
+E lcd.dsi.dpi: can't fetch data from external memory fast enough, underrun happens

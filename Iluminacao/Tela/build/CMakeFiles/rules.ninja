@@ -1974,7 +1974,7 @@ rule C_STATIC_LIBRARY_LINKER____idf_main_
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela -B/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build
+  command = /usr/bin/cmake --regenerate-during-build -S/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela -B/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build
   description = Re-running CMake...
   generator = 1
 

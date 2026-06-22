@@ -26,6 +26,8 @@ idf.py build
 
 ```bash
 idf.py flash monitor
+
+idf.py erase-flash build flash monitor
 ```
 
 Sair do monitor: `Ctrl + ]`

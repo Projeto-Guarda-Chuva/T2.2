@@ -5,6 +5,7 @@ idf_component_register(
         "source/protocol.c"
         "source/http_server.c"
         "source/wifi_manager.c"
+        "source/esp_lcd_jd9365.c"
     INCLUDE_DIRS
         "header"
     REQUIRES

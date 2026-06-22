@@ -13,7 +13,7 @@
 
 static const char *TAG = "MAIN";
 
-// --- Callback para logar o IP quando o Wi-Fi conectar ---
+//Callback para logar o IP quando o Wi-Fi conectar
 static void on_got_ip(void *arg, esp_event_base_t base, int32_t id, void *data)
 {
     ip_event_got_ip_t *event = (ip_event_got_ip_t *)data;
@@ -25,7 +25,7 @@ static void on_got_ip(void *arg, esp_event_base_t base, int32_t id, void *data)
 static void display_task(void *arg)
 {
     display_init();
-    display_set_bg_color(0, 0, 250);
+    display_set_bg_color(255, 0, 255);
     vTaskDelete(NULL);
 }
 

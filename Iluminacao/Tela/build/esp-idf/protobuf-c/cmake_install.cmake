@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/diogo/Documents/Uni/ODS/T2.2/ESP-32-P4/Tela/build/esp-idf/protobuf-c/install_local_manifest.txt"
+  file(WRITE "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build/esp-idf/protobuf-c/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
