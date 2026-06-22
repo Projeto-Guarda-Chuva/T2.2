@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "controle_esp32_p4",
-    "project_version":    "9b6dca3-dirty",
+    "project_version":    "8970f850-dirty",
     "project_path":       "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela",
     "idf_path":           "/home/diogo/esp/esp-idf",
     "build_dir":          "/home/diogo/Documents/Uni/ODS/T2.2/Iluminacao/Tela/build",
