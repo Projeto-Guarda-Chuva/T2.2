@@ -70,9 +70,9 @@ static void test_display_task_initializes_display_and_sets_default_color(void) {
         g_test_state.display_set_bg_color_call_count == 1,
         "display task should set initial background color"
     );
-    assert_true(g_test_state.last_display_r == 0, "display red channel should start at 0");
+    assert_true(g_test_state.last_display_r == 255, "display red channel should start at 255");
     assert_true(g_test_state.last_display_g == 0, "display green channel should start at 0");
-    assert_true(g_test_state.last_display_b == 250, "display blue channel should start at 250");
+    assert_true(g_test_state.last_display_b == 255, "display blue channel should start at 255");
     assert_true(g_test_state.vtask_delete_call_count == 1, "display task should delete itself");
 }
 
