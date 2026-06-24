@@ -24,18 +24,10 @@ void audio_stop(void) {
 
 
 void audio_set_volume(uint8_t volume) {
-    if(volume < 0) {
-        ESP_LOGW(TAG, "Volume %d inválido! Ajustando para 0.", volume);
-        current_volume = 0;
-    }
-
-    else if(volume > 100) {
+    if(volume > 100) {
         ESP_LOGW(TAG, "Volume %d inválido! Ajustando para 100.", volume);
         current_volume = 100;
     }
 
-    else {
-        ESP_LOGI(TAG, "Alterando o volume atual de %d para %d%%", current_volume, volume);
-        current_volume = volume;
-    }
+    ESP_LOGI(TAG, "Alterando o volume atual de %d para %d%%", current_volume, volume);
 }
