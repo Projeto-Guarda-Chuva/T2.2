@@ -1,5 +1,5 @@
 idf_component_register(
-SRCS
+    SRCS
         "main.c"
         "lighting_manager.c"
 
