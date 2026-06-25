@@ -1,6 +1,6 @@
 # Resultado dos testes
 
-[![Status do QA Central](https://github.com/Projeto-Guarda-Chuva/.github/actions/workflows/qa-t51.yml/badge.svg)](https://github.com/Projeto-Guarda-Chuva/.github/actions)
+[![Status do QA Central](https://github.com/Projeto-Guarda-Chuva/.github/actions/workflows/qa-t22.yml/badge.svg)](https://github.com/Projeto-Guarda-Chuva/.github/actions)
 
 # Suíte de Testes Unitários - Camada T2.2
 
