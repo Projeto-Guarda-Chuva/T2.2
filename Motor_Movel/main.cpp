@@ -1,5 +1,5 @@
 /* ============================================================
- * ── API REST ────────────────────────────────────────────────
+ * ── API REST (ESP32) ────────────────────────────────────────
  *   GET  /status
  *        Resposta JSON: { rssi, heap, uptime, state, fcs, fci }
  *
@@ -21,8 +21,8 @@
  * ============================================================ */
 
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+#include <WiFi.h>
+#include <WebServer.h>
 #include "motor_movel.h"
 
 /* ── WiFi ──────────────────────────────────────────────────── */
@@ -30,7 +30,7 @@ static const char *SSID = "ESP_F85DED";
 /* static const char *PASS = "senha";  <- descomente se necessário */
 
 /* ── Servidor HTTP ─────────────────────────────────────────── */
-static ESP8266WebServer server(80);
+static WebServer server(80);
 
 /* ── Estado global ─────────────────────────────────────────── */
 static volatile estado_t state = PARADO;
@@ -51,8 +51,12 @@ void setup(void)
 
     /* Saídas */
     pinMode(ENABLE_PIN, OUTPUT);
-    pinMode(RPWM,       OUTPUT);
-    pinMode(LPWM,       OUTPUT);
+
+    /* Configuração do LEDC (PWM nativo do ESP32) */
+    ledcSetup(CANAL_RPWM, PWM_FREQ, PWM_RES);
+    ledcSetup(CANAL_LPWM, PWM_FREQ, PWM_RES);
+    ledcAttachPin(RPWM, CANAL_RPWM);
+    ledcAttachPin(LPWM, CANAL_LPWM);
 
     /* Entradas com pull-up (fins de curso NC) */
     pinMode(FCS_PIN, INPUT_PULLUP);
@@ -73,7 +77,7 @@ void setup(void)
     });
 
     server.begin();
-    Serial.println("Servidor HTTP do Motor Movel iniciado.");
+    Serial.println("Servidor HTTP do Motor Movel iniciado no ESP32.");
 }
 
 /* ============================================================
@@ -199,24 +203,24 @@ void handle_status(void)
 
 void motor_parar(void)
 {
-    analogWrite(RPWM, 0);
-    analogWrite(LPWM, 0);
+    ledcWrite(CANAL_RPWM, 0);
+    ledcWrite(CANAL_LPWM, 0);
     state = PARADO;
     Serial.println("Motor parado.");
 }
 
 void motor_subir(void)
 {
-    analogWrite(LPWM, 0);
-    analogWrite(RPWM, VELOCIDADE);
+    ledcWrite(CANAL_LPWM, 0);
+    ledcWrite(CANAL_RPWM, VELOCIDADE);
     state = SUBINDO;
     Serial.println("Motor subindo.");
 }
 
 void motor_descer(void)
 {
-    analogWrite(RPWM, 0);
-    analogWrite(LPWM, VELOCIDADE);
+    ledcWrite(CANAL_RPWM, 0);
+    ledcWrite(CANAL_LPWM, VELOCIDADE);
     state = DESCENDO;
     Serial.println("Motor descendo.");
 }
@@ -267,11 +271,9 @@ void wifi_conectar(void)
         return;
     }
 
-    // Se o WiFi desconectou, reseta o flag para que imprima o IP quando reconectar
     ja_conectado = false;
 
     static unsigned long last_attempt = 0;
-    // Tenta reconectar a cada 10 segundos de forma assíncrona, sem travar o loop
     if (millis() - last_attempt > 10000 || last_attempt == 0) {
         Serial.println("\nTentando conectar ao WiFi...");
         WiFi.begin(SSID);

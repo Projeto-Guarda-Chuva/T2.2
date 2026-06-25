@@ -1,15 +1,21 @@
 #ifndef MOTOR_MOVEL_H
 #define MOTOR_MOVEL_H
 
-/* ── Pinos ─────────────────────────────────────────────────── */
-#define ENABLE_PIN  D1   /* R_EN + L_EN do BTS7960 em paralelo  */
-#define RPWM        D5   /* PWM sentido SUBIR                    */
-#define LPWM        D6   /* PWM sentido DESCER                   */
-#define FCS_PIN     D7   /* Fim de curso Superior (NC)           */
-#define FCI_PIN     D2   /* Fim de curso Inferior (NC) - Pino Seguro */
+/* ── Pinos (GPIOs reais do ESP_WROOM-32) ───────────────────── */
+#define ENABLE_PIN  12   /* R_EN + L_EN do BTS7960 em paralelo  */
+#define RPWM        14   /* PWM sentido SUBIR                    */
+#define LPWM        27   /* PWM sentido DESCER                   */
+#define FCS_PIN     13   /* Fim de curso Superior (NC)           */
+#define FCI_PIN     15   /* Fim de curso Inferior (NC)           */
 
 /* ── Parâmetros ────────────────────────────────────────────── */
 #define VELOCIDADE  200  /* 0-255  (~78 % PWM)                  */
+
+/* ── Configuração do LEDC (PWM nativo do ESP32) ────────────── */
+#define PWM_FREQ      5000  /* Frequência do PWM: 5 kHz */
+#define PWM_RES       8     /* Resolução de 8 bits (0-255) */
+#define CANAL_RPWM    0     /* Canal LEDC 0 */
+#define CANAL_LPWM    1     /* Canal LEDC 1 */
 
 /* ── Estado do atuador ─────────────────────────────────────── */
 typedef enum {
