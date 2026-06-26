@@ -9,7 +9,7 @@
 #define FCI_PIN     15   /* Fim de curso Inferior (NC)           */
 
 /* ── Parâmetros ────────────────────────────────────────────── */
-#define VELOCIDADE  200  /* 0-255  (~78 % PWM)                  */
+#define VELOCIDADE  200  /* 0-25000  (~78 % PWM)                  */
 
 /* ── Configuração do LEDC (PWM nativo do ESP32) ────────────── */
 #define PWM_FREQ      5000  /* Frequência do PWM: 5 kHz */

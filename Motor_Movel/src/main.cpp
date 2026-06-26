@@ -26,8 +26,8 @@
 #include "motor_movel.h"
 
 /* ── WiFi ──────────────────────────────────────────────────── */
-static const char *SSID = "ESP_F85DED";
-/* static const char *PASS = "senha";  <- descomente se necessário */
+static const char *SSID = "";
+static const char *PASS = "";
 
 /* ── Servidor HTTP ─────────────────────────────────────────── */
 static WebServer server(80);
@@ -48,6 +48,10 @@ static volatile estado_t state = PARADO;
 void setup(void)
 {
     Serial.begin(115200);
+
+    delay(2000);
+
+    Serial.println("ESP32 iniciado!");
 
     /* Saídas */
     pinMode(ENABLE_PIN, OUTPUT);
@@ -85,12 +89,19 @@ void setup(void)
  * ============================================================ */
 void loop(void)
 {
-    if (WiFi.status() != WL_CONNECTED) {
-        wifi_conectar();
+    verificar_fins_de_curso();
+
+    if (WiFi.status() == WL_CONNECTED) {
+        server.handleClient();
     }
 
-    verificar_fins_de_curso();   /* proteção por hardware */
-    server.handleClient();
+    else {
+        static unsigned long last_recon = 0;
+        if (millis() - last_recon > 5000) {
+            WiFi.begin(SSID, PASS);
+            last_recon = millis();
+        }
+    }
 }
 
 /* ============================================================
@@ -99,72 +110,81 @@ void loop(void)
 
 void handle_command(void)
 {
+    server.sendHeader("Access-Control-Allow-Origin", "*");
+
     if (!server.hasArg("plain")) {
-        server.send(400, "text/plain",
-            "Corpo vazio. Use 31, 32, 30, 34 ou 35.");
+        server.send(400, "text/plain", "Corpo vazio. Use 31, 32, 30, 34 ou 35.");
         return;
     }
 
     String cmd = server.arg("plain");
     cmd.trim();
 
-    Serial.print("Comando recebido: ");
+    Serial.print("Bruto recebido: ");
     Serial.println(cmd);
 
-    /* ── 31 : Subir ─────────────────────────────────────────── */
+    if (cmd.startsWith("{")) {
+        String num_apenas = "";
+        for (size_t i = 0; i < cmd.length(); i++) {
+            if (isDigit(cmd[i])) {
+                num_apenas += cmd[i];
+            }
+        }
+        cmd = num_apenas; 
+    }
+
+    Serial.print("Comando processado: ");
+    Serial.println(cmd);
+
     if (cmd == CMD_SUBIR) {
         if (fim_superior()) {
-            server.send(200, "text/plain",
-                "Ignorado: fim de curso superior ja acionado.");
+            server.send(200, "text/plain", "Ignorado: fim de curso superior ja acionado.");
             return;
         }
+        
         if (state == SUBINDO) {
             server.send(200, "text/plain", "Ja esta subindo.");
             return;
         }
+        
         if (state == DESCENDO) {
-            motor_parar();   /* para antes de inverter */
-            delay(400);      /* tempo morto de segurança para desaceleração */
+            motor_parar(); 
+            delay(400);
         }
         motor_subir();
 
-    /* ── 32 : Descer ────────────────────────────────────────── */
     } else if (cmd == CMD_DESCER) {
         if (fim_inferior()) {
-            server.send(200, "text/plain",
-                "Ignorado: fim de curso inferior ja acionado.");
+            server.send(200, "text/plain", "Ignorado: fim de curso inferior ja acionado.");
             return;
         }
+
         if (state == DESCENDO) {
             server.send(200, "text/plain", "Ja esta descendo.");
             return;
         }
+
         if (state == SUBINDO) {
-            motor_parar();   /* para antes de inverter */
-            delay(400);      /* tempo morto de segurança para desaceleração */
+            motor_parar();
+            delay(400);
         }
         motor_descer();
 
-    /* ── 33 : Parar ─────────────────────────────────────────── */
     } else if (cmd == CMD_PARAR) {
         motor_parar();
 
-    /* ── 34 : Fim de curso Superior (software) ──────────────── */
     } else if (cmd == CMD_FCS) {
         if (state == SUBINDO)
             motor_parar();
         Serial.println("FCS recebido por software.");
 
-    /* ── 35 : Fim de curso Inferior (software) ──────────────── */
     } else if (cmd == CMD_FCI) {
         if (state == DESCENDO)
             motor_parar();
         Serial.println("FCI recebido por software.");
 
-    /* ── Comando inválido ───────────────────────────────────── */
     } else {
-        server.send(400, "text/plain",
-            "Comando invalido. Use 31, 32, 30, 34 ou 35.");
+        server.send(400, "text/plain", "Comando invalido. Use 31, 32, 30, 34 ou 35.");
         return;
     }
 
@@ -259,25 +279,29 @@ void verificar_fins_de_curso(void)
 
 void wifi_conectar(void)
 {
-    static bool ja_conectado = false;
-
     if (WiFi.status() == WL_CONNECTED) {
-        if (!ja_conectado) {
-            Serial.println("\nConectado!");
-            Serial.print("IP do Motor Movel: ");
-            Serial.println(WiFi.localIP());
-            ja_conectado = true;
-        }
         return;
     }
 
-    ja_conectado = false;
+    Serial.println("\nTentando conectar ao WiFi...");
+    WiFi.begin(SSID);
 
-    static unsigned long last_attempt = 0;
-    if (millis() - last_attempt > 10000 || last_attempt == 0) {
-        Serial.println("\nTentando conectar ao WiFi...");
-        WiFi.begin(SSID);
-        /* WiFi.begin(SSID, PASS); */
-        last_attempt = millis();
+    int tentativas = 0;
+    while (WiFi.status() != WL_CONNECTED && tentativas < 20) {
+        delay(500);
+        Serial.print(".");
+        tentativas++;
+        
+        verificar_fins_de_curso(); 
+    }
+
+    if (WiFi.status() == WL_CONNECTED) {
+        Serial.println("\nConectado com sucesso!");
+        Serial.print("IP do Motor Movel: ");
+        Serial.println(WiFi.localIP());
+    } 
+    
+    else {
+        Serial.println("\nFalha ao conectar. Tentando novamente em segundo plano...");
     }
 }
