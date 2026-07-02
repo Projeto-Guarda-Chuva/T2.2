@@ -6,22 +6,26 @@
 
 
 typedef enum {
-    AUDIO_STOPPED,
+    AUDIO_IDLE,
+    AUDIO_REQUESTED,
     AUDIO_PLAYING,
+    AUDIO_STOPPED,
     AUDIO_ERROR
 } audio_state_t;
 
 
 void audio_init(void);
 
-bool audio_is_playing(void);
+bool audio_request_play(const char *file);
 
-void audio_play_default(void);
+bool audio_request_stop(void);
 
-void audio_play(const char *file);
+bool audio_request_volume(uint8_t volume);
 
-void audio_stop(void);
+audio_state_t audio_get_state(void);
 
-void audio_set_volume(uint8_t volume);
+uint8_t audio_get_volume(void);
+
+const char *audio_get_last_file(void);
 
 #endif
