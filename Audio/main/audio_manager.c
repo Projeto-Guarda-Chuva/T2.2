@@ -7,7 +7,7 @@ static const char *TAG = "AUDIO";
 
 static uint8_t current_volume = 100;
 
-static bool playing = false;
+static audio_state_t current_state = AUDIO_STOPPED;
 
 static char current_file[64] = "";
 
@@ -20,7 +20,11 @@ void audio_init(void) {
 
 
 bool audio_is_playing(void) {
-    return playing;
+    if(current_state == AUDIO_PLAYING) {
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -38,7 +42,7 @@ void audio_play(const char *file) {
     strncpy(current_file, file, sizeof(current_file)-1);
     current_file[sizeof(current_file)-1] = '\0';
 
-    playing = true;
+    current_state = AUDIO_PLAYING;
     ESP_LOGI(TAG, 
         "Reproduzindo arquivo \"%s\" (Volume: %d%%)", 
         current_file, 
@@ -47,12 +51,12 @@ void audio_play(const char *file) {
 
 
 void audio_stop(void) {
-    if(!playing) {
+    if(AUDIO_STOPPED) {
         ESP_LOGW(TAG, "Nenhum áudio está sendo reproduzido.");
         return;
     }
 
-    playing = false;
+    current_state = AUDIO_STOPPED;
     ESP_LOGI(TAG, "Parando áudio!");
 }
 

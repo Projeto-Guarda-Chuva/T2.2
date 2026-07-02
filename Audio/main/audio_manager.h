@@ -4,6 +4,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
+typedef enum {
+    AUDIO_STOPPED,
+    AUDIO_PLAYING,
+    AUDIO_ERROR
+} audio_state_t;
+
+
 void audio_init(void);
 
 bool audio_is_playing(void);
