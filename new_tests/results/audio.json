@@ -1,0 +1,96 @@
+{
+  "componente": "audio",
+  "resumo": { "total": 15, "pass": 13, "fail": 2 },
+  "testes": [
+    {
+      "nome": "test_usar_sem_init_deve_alertar",
+      "entrada": "audio_play(\"alerta.mp3\") sem audio_init()",
+      "resultado": "FAIL",
+      "saida_obtida": ["Reproduzindo arquivo \"alerta.mp3\" (Volume: 100%)"]
+    },
+    {
+      "nome": "test_init_funciona",
+      "entrada": "audio_init()",
+      "resultado": "PASS",
+      "saida_obtida": ["Inicializando atuador de áudio...", "Volume inicial: 100%", "Atuador de áudio inicializado!"]
+    },
+    {
+      "nome": "test_play_com_arquivo_valido",
+      "entrada": "audio_play(\"alerta.mp3\")",
+      "resultado": "PASS",
+      "saida_obtida": ["Reproduzindo arquivo \"alerta.mp3\" (Volume: 100%)"]
+    },
+    {
+      "nome": "test_play_arquivo_nulo_rejeitado",
+      "entrada": "audio_play(NULL)",
+      "resultado": "PASS",
+      "saida_obtida": ["Nome do arquivo inválido!"]
+    },
+    {
+      "nome": "test_play_arquivo_vazio_rejeitado",
+      "entrada": "audio_play(\"\")",
+      "resultado": "PASS",
+      "saida_obtida": ["Nome do arquivo inválido!"]
+    },
+    {
+      "nome": "test_play_default",
+      "entrada": "audio_play_default()",
+      "resultado": "PASS",
+      "saida_obtida": ["Reproduzindo áudio padrão!", "Reproduzindo arquivo \"default.mp3\" (Volume: 100%)"]
+    },
+    {
+      "nome": "test_is_playing_reflete_estado",
+      "entrada": "audio_play(\"x.mp3\") depois audio_stop()",
+      "resultado": "PASS",
+      "saida_obtida": ["Reproduzindo arquivo \"x.mp3\" (Volume: 100%)", "Parando áudio!"]
+    },
+    {
+      "nome": "test_stop_registra_parada",
+      "entrada": "audio_play(\"x.mp3\"); audio_stop()",
+      "resultado": "PASS",
+      "saida_obtida": ["Parando áudio!"]
+    },
+    {
+      "nome": "test_stop_sem_reproduzir_deveria_avisar",
+      "entrada": "audio_stop() sem nada em reproducao",
+      "resultado": "FAIL",
+      "saida_obtida": ["Parando áudio!"]
+    },
+    {
+      "nome": "test_volume_persiste",
+      "entrada": "audio_set_volume(50); audio_set_volume(70)",
+      "resultado": "PASS",
+      "saida_obtida": ["Alterando o volume atual de 50 para 70%"]
+    },
+    {
+      "nome": "test_volume_maximo_valido_sem_alerta",
+      "entrada": "audio_set_volume(100)",
+      "resultado": "PASS",
+      "saida_obtida": ["Alterando o volume atual de 70 para 100%"]
+    },
+    {
+      "nome": "test_volume_minimo_sem_alerta",
+      "entrada": "audio_set_volume(0)",
+      "resultado": "PASS",
+      "saida_obtida": ["Alterando o volume atual de 100 para 0%"]
+    },
+    {
+      "nome": "test_volume_acima_do_limite_alerta",
+      "entrada": "audio_set_volume(101)",
+      "resultado": "PASS",
+      "saida_obtida": ["Volume 101 inválido! Ajustando para 100.", "Alterando o volume atual de 0 para 100%"]
+    },
+    {
+      "nome": "test_volume_clamp_reflete_na_mensagem",
+      "entrada": "audio_set_volume(200)",
+      "resultado": "PASS",
+      "saida_obtida": ["Volume 200 inválido! Ajustando para 100.", "Alterando o volume atual de 100 para 100%"]
+    },
+    {
+      "nome": "test_volume_negativo_vira_255_e_corta",
+      "entrada": "audio_set_volume(-1)",
+      "resultado": "PASS",
+      "saida_obtida": ["Volume 255 inválido! Ajustando para 100.", "Alterando o volume atual de 100 para 100%"]
+    }
+  ]
+}

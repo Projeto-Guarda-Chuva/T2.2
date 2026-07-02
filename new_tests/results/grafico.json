@@ -1,0 +1,96 @@
+{
+  "componente": "grafico",
+  "resumo": { "total": 15, "pass": 14, "fail": 1 },
+  "testes": [
+    {
+      "nome": "test_id11_vermelho",
+      "entrada": "{\"id\":11}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(255, 0, 0) chamado 1x", "Comando Recebido: 11"]
+    },
+    {
+      "nome": "test_id12_verde",
+      "entrada": "{\"id\":12}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(0, 255, 0) chamado 1x", "Comando Recebido: 12"]
+    },
+    {
+      "nome": "test_id13_azul",
+      "entrada": "{\"id\":13}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(0, 0, 255) chamado 1x", "Comando Recebido: 13"]
+    },
+    {
+      "nome": "test_id14_preto",
+      "entrada": "{\"id\":14}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(0, 0, 0) chamado 1x", "Comando Recebido: 14"]
+    },
+    {
+      "nome": "test_id15_branco",
+      "entrada": "{\"id\":15}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(255, 255, 255) chamado 1x", "Comando Recebido: 15"]
+    },
+    {
+      "nome": "test_id10_cor_customizada",
+      "entrada": "{\"id\":10,\"r\":12,\"g\":34,\"b\":56}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(12, 34, 56) chamado 1x", "Comando Recebido: 10"]
+    },
+    {
+      "nome": "test_id10_sem_campos",
+      "entrada": "{\"id\":10}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(0, 0, 0) chamado 1x", "Comando Recebido: 10"]
+    },
+    {
+      "nome": "test_id10_apenas_g",
+      "entrada": "{\"id\":10,\"g\":50}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(0, 50, 0) chamado 1x", "Comando Recebido: 10"]
+    },
+    {
+      "nome": "test_json_invalido",
+      "entrada": "isso nao e json",
+      "resultado": "PASS",
+      "saida_obtida": ["display nao foi chamado", "Erro ao ler JSON"]
+    },
+    {
+      "nome": "test_sem_id",
+      "entrada": "{\"cor\":\"vermelho\"}",
+      "resultado": "PASS",
+      "saida_obtida": ["display nao foi chamado"]
+    },
+    {
+      "nome": "test_id_tipo_errado",
+      "entrada": "{\"id\":\"abc\"}",
+      "resultado": "PASS",
+      "saida_obtida": ["display nao foi chamado"]
+    },
+    {
+      "nome": "test_id_desconhecido",
+      "entrada": "{\"id\":99}",
+      "resultado": "PASS",
+      "saida_obtida": ["display nao foi chamado", "Comando Recebido: 99", "ID Desconhecido"]
+    },
+    {
+      "nome": "test_id10_campos_faltando",
+      "entrada": "{\"id\":10,\"r\":200}",
+      "resultado": "PASS",
+      "saida_obtida": ["display_set_bg_color(200, 0, 0) chamado 1x", "Comando Recebido: 10"]
+    },
+    {
+      "nome": "test_id10_rgb_fora_da_faixa",
+      "entrada": "{\"id\":10,\"r\":300,\"g\":-5,\"b\":0}",
+      "resultado": "FAIL",
+      "saida_obtida": ["display_set_bg_color(44, 251, 0) chamado 1x", "Comando Recebido: 10"]
+    },
+    {
+      "nome": "test_comando_de_outro_grupo",
+      "entrada": "{\"id\":21}",
+      "resultado": "PASS",
+      "saida_obtida": ["display nao foi chamado", "Comando Recebido: 21", "ID Desconhecido"]
+    }
+  ]
+}

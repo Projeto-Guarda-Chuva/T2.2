@@ -1,0 +1,66 @@
+{
+  "componente": "iluminacao",
+  "resumo": { "total": 10, "pass": 9, "fail": 1 },
+  "testes": [
+    {
+      "nome": "test_set_color_antes_do_init_erro",
+      "entrada": "lighting_set_color(255,0,0) sem lighting_init()",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=0x ultima=(0,0,0) refresh=0x clear=0x new_device=0x", "Nova cor recebida: R=255 G=0 B=0!", "LED Strip não inicializado!"]
+    },
+    {
+      "nome": "test_off_antes_do_init_erro",
+      "entrada": "lighting_off() sem lighting_init()",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=0x ultima=(0,0,0) refresh=0x clear=0x new_device=0x", "LED Strip não inicializado!"]
+    },
+    {
+      "nome": "test_set_color_antes_do_init_nao_deveria_aceitar",
+      "entrada": "lighting_set_color(100,0,0) sem lighting_init()",
+      "resultado": "FAIL",
+      "saida_obtida": ["set_pixel=0x ultima=(0,0,0) refresh=0x clear=0x new_device=0x", "Nova cor recebida: R=100 G=0 B=0!", "LED Strip não inicializado!"]
+    },
+    {
+      "nome": "test_init_cria_a_fita",
+      "entrada": "lighting_init()",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=0x ultima=(0,0,0) refresh=0x clear=0x new_device=1x", "Inicializando fita LED...", "GPIO: 2", "Quantidade de LEDs: 24", "Driver WS2812 criado com sucesso!", "Lighting inicializado!"]
+    },
+    {
+      "nome": "test_init_repetido_nao_recria",
+      "entrada": "lighting_init() com a fita ja inicializada",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=0x ultima=(0,0,0) refresh=0x clear=0x new_device=0x", "Lighting já inicializado!"]
+    },
+    {
+      "nome": "test_set_color_pinta_24_leds",
+      "entrada": "lighting_set_color(10,20,30)",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=24x ultima=(10,20,30) refresh=1x clear=0x new_device=0x", "Nova cor recebida: R=10 G=20 B=30!", "Cor aplicada em 24 LEDs: R=10 G=20 B=30 Intensidade=255"]
+    },
+    {
+      "nome": "test_off_apaga_a_fita",
+      "entrada": "lighting_off()",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=0x ultima=(0,0,0) refresh=1x clear=1x new_device=0x", "Iluminacao desligada: 24 LEDs apagados"]
+    },
+    {
+      "nome": "test_set_intensity_reaplica_escalado",
+      "entrada": "lighting_set_color(200,100,50); lighting_set_intensity(128)",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=24x ultima=(100,50,25) refresh=1x clear=0x new_device=0x", "Nova cor recebida: R=200 G=100 B=50!", "Cor aplicada em 24 LEDs: R=200 G=100 B=50 Intensidade=255", "Alterando intensidade de 255 para 128!", "Nova cor recebida: R=200 G=100 B=50!", "Cor aplicada em 24 LEDs: R=100 G=50 B=25 Intensidade=128", "Reaplicando cor atual após mudança de intensidade!"]
+    },
+    {
+      "nome": "test_intensidade_zero_apaga_a_cor",
+      "entrada": "lighting_set_color(255,255,255); lighting_set_intensity(0)",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=24x ultima=(0,0,0) refresh=1x clear=0x new_device=0x", "Nova cor recebida: R=255 G=255 B=255!", "Cor aplicada em 24 LEDs: R=128 G=128 B=128 Intensidade=128", "Alterando intensidade de 128 para 0!", "Nova cor recebida: R=255 G=255 B=255!", "Cor aplicada em 24 LEDs: R=0 G=0 B=0 Intensidade=0", "Reaplicando cor atual após mudança de intensidade!"]
+    },
+    {
+      "nome": "test_intensidade_maxima_mantem_a_cor",
+      "entrada": "lighting_set_intensity(255); lighting_set_color(80,120,200)",
+      "resultado": "PASS",
+      "saida_obtida": ["set_pixel=24x ultima=(80,120,200) refresh=1x clear=0x new_device=0x", "Alterando intensidade de 0 para 255!", "Nova cor recebida: R=255 G=255 B=255!", "Cor aplicada em 24 LEDs: R=255 G=255 B=255 Intensidade=255", "Reaplicando cor atual após mudança de intensidade!", "Nova cor recebida: R=80 G=120 B=200!", "Cor aplicada em 24 LEDs: R=80 G=120 B=200 Intensidade=255"]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "componente": "grafico_http",
+  "resumo": { "total": 6, "pass": 5, "fail": 1 },
+  "testes": [
+    {
+      "nome": "test_registra_endpoint_cmd",
+      "entrada": "start_web_server()",
+      "resultado": "PASS",
+      "saida_obtida": ["process_command=0x ultimo='' resposta='(nenhuma)' send_500=0x", "Servidor rodando na porta 80"]
+    },
+    {
+      "nome": "test_payload_valido_encaminhado",
+      "entrada": "POST /cmd corpo='{\"id\":11}'",
+      "resultado": "PASS",
+      "saida_obtida": ["process_command=1x ultimo='{\"id\":11}' resposta='{\"status\": \"ok\"}' send_500=0x", "Servidor rodando na porta 80"]
+    },
+    {
+      "nome": "test_corpo_no_limite_128_rejeitado",
+      "entrada": "POST /cmd content_len=128",
+      "resultado": "PASS",
+      "saida_obtida": ["process_command=0x ultimo='' resposta='(nenhuma)' send_500=1x", "Servidor rodando na porta 80"]
+    },
+    {
+      "nome": "test_corpo_127_aceito",
+      "entrada": "POST /cmd content_len=127 corpo='{}'",
+      "resultado": "PASS",
+      "saida_obtida": ["process_command=1x ultimo='{}' resposta='{\"status\": \"ok\"}' send_500=0x", "Servidor rodando na porta 80"]
+    },
+    {
+      "nome": "test_corpo_vazio_falha",
+      "entrada": "POST /cmd corpo vazio (content_len=0)",
+      "resultado": "PASS",
+      "saida_obtida": ["process_command=0x ultimo='' resposta='(nenhuma)' send_500=0x", "Servidor rodando na porta 80"]
+    },
+    {
+      "nome": "test_json_invalido_nao_deveria_responder_ok",
+      "entrada": "POST /cmd corpo='isso nao e json'",
+      "resultado": "FAIL",
+      "saida_obtida": ["process_command=1x ultimo='isso nao e json' resposta='{\"status\": \"ok\"}' send_500=0x", "Servidor rodando na porta 80"]
+    }
+  ]
+}
