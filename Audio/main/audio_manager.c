@@ -97,23 +97,21 @@ bool audio_set_volume(uint8_t volume) {
 }
 
 
-void audio_stop(void) {
-    if(AUDIO_STOPPED) {
-        ESP_LOGW(TAG, "Nenhum áudio está sendo reproduzido.");
-        return;
-    }
-
-    current_state = AUDIO_STOPPED;
-    ESP_LOGI(TAG, "Parando áudio!");
+audio_state_t audio_get_state(void) {
+    return state;
 }
 
 
-void audio_set_volume(uint8_t volume) {
-    if(volume > 100) {
-        ESP_LOGW(TAG, "Volume %d inválido! Ajustando para 100.", volume);
-        volume = 100;
-    }
+bool audio_is_playing(void) {
+    return state == AUDIO_PLAYING;
+}
 
-    ESP_LOGI(TAG, "Alterando o volume atual de %d para %d%%", current_volume, volume);
-    current_volume = volume;
+
+uint8_t audio_get_volume(void) {
+    return current_volume;
+}
+
+
+const char *audio_get_current_file(void) {
+    return current_file;
 }
