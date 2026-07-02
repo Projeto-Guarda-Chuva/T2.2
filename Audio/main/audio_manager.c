@@ -40,12 +40,35 @@ void audio_deinit(void) {
 }
 
 
-bool audio_is_playing(void) {
-    if(current_state == AUDIO_PLAYING) {
-        return true;
+bool audio_play(const char *file) {
+    if(player == NULL) {
+        return false;
     }
 
-    return false;
+    if(file == NULL || strlen(file) == 0) {
+        return false;
+    }
+
+    char absolute_path[PATH_MAX];
+    if(realpath(file, absolute_path) == NULL) {
+        state = AUDIO_ERROR;
+        return false;
+    }
+
+    snprintf(current_file, sizeof(current_file), "%s", absolute_path);
+    gchar *uri = gst_filename_to_uri(absolute_path, NULL);
+
+    g_object_set(player, "uri", uri, NULL);
+    g_free(uri);
+
+    GstStateChangeReturn ret = gst_element_set_state(player, GST_STATE_PLAYING);
+    if(ret == GST_STATE_CHANGE_FAILURE) {
+        state = AUDIO_ERROR;
+        return false;
+    }
+
+    state = AUDIO_PLAYING;
+    return true;
 }
 
 
