@@ -82,20 +82,18 @@ void audio_stop(void) {
 }
 
 
-void audio_play(const char *file) {
-    if(file == NULL || strlen(file) == 0) {
-        ESP_LOGE(TAG, "Nome do arquivo inválido!");
-        return;
+bool audio_set_volume(uint8_t volume) {
+    if(player == NULL) {
+        return false;
     }
 
-    strncpy(current_file, file, sizeof(current_file)-1);
-    current_file[sizeof(current_file)-1] = '\0';
+    if(volume > 100) {
+        volume = 100;
+    }
 
-    current_state = AUDIO_PLAYING;
-    ESP_LOGI(TAG, 
-        "Reproduzindo arquivo \"%s\" (Volume: %d%%)", 
-        current_file, 
-        current_volume);
+    current_volume = volume;
+    g_object_set(player, "volume", volume / 100.0, NULL);
+    return true;
 }
 
 
