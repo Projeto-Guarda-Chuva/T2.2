@@ -72,10 +72,15 @@ bool audio_play(const char *file) {
 }
 
 
-void audio_play_default(void) {
-    ESP_LOGI(TAG, "Reproduzindo áudio padrão!");
-    audio_play("default.mp3");
+void audio_stop(void) {
+    if(player == NULL) {
+        return;
+    }
+
+    gst_element_set_state(player, GST_STATE_READY);
+    state = AUDIO_STOPPED;
 }
+
 
 void audio_play(const char *file) {
     if(file == NULL || strlen(file) == 0) {
