@@ -31,6 +31,15 @@ bool audio_init(void) {
 }
 
 
+void audio_deinit(void) {
+    if(player) {
+        gst_element_set_state(player, GST_STATE_NULL);
+        gst_object_unref(player);
+        player = NULL;
+    }
+}
+
+
 bool audio_is_playing(void) {
     if(current_state == AUDIO_PLAYING) {
         return true;
