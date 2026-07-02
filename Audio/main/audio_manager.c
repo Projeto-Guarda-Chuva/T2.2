@@ -1,21 +1,33 @@
 #include "audio_manager.h"
 
+#include <gst/gst.h>
+#include <glib.h>
+#include <limits.h>
+#include <stdio.h>
 #include <string.h>
-#include "esp_log.h"
 
-static const char *TAG = "AUDIO";
+static GstElement *player = NULL;
+
+static audio_state_t state = AUDIO_IDLE;
 
 static uint8_t current_volume = 100;
 
-static audio_state_t current_state = AUDIO_STOPPED;
-
-static char current_file[64] = "";
+static char current_file[PATH_MAX];
 
 
-void audio_init(void) {
-    ESP_LOGI(TAG, "Inicializando atuador de áudio...");
-    ESP_LOGI(TAG, "Volume inicial: %d%%", current_volume);
-    ESP_LOGI(TAG, "Atuador de áudio inicializado!");
+bool audio_init(void) {
+    gst_init(NULL, NULL);
+
+    player = gst_element_factory_make("playbin", "audio-player")
+
+    if(player == NULL) {
+        state = AUDIO_ERROR;
+        return false;
+    }
+
+    g_object_set(player, "volume", current_volume / 100.0, NULL);
+    state = AUDIO_IDLE;
+    return true;
 }
 
 
