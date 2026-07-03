@@ -1,0 +1,29 @@
+name: QA - Equipe T2.2
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  testes:
+    name: Testes T2.2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar dependências
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3
+
+      - name: Dar permissão ao script
+        run: |
+          chmod +x new_tests/run_tests.sh
+
+      - name: Executar testes
+        run: |
+          cd new_tests
+          bash run_tests.sh
