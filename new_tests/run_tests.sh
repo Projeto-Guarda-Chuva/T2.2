@@ -88,4 +88,18 @@ gcc "${CFLAGS[@]}" \
   -o "$BUILD_DIR/test_motor_movel"
 "$BUILD_DIR/test_motor_movel" "$RESULTS_DIR/motor_movel.json" || overall=$?
 
+echo
+echo "[motor_fixo] Atuador de Motor Fixo (Portao)"
+gcc "${CFLAGS[@]}" \
+  -I"$NEW_TESTS/motor_fixo/mocks" \
+  "$UNITY/unity.c" \
+  "$SUPPORT/test_results.c" \
+  "$NEW_TESTS/motor_fixo/mocks/fake_motor_fixo_log.c" \
+  "$NEW_TESTS/motor_fixo/mocks/fake_esp8266.c" \
+  "$NEW_TESTS/motor_fixo/mocks/test_log_capture.c" \
+  "$NEW_TESTS/motor_fixo/test_motor_fixo.c" \
+  "$NEW_TESTS/motor_fixo/motor_fixo.c" \
+  -o "$BUILD_DIR/test_motor_fixo"
+"$BUILD_DIR/test_motor_fixo" "$RESULTS_DIR/motor_fixo.json" || overall=$?
+
 exit "$overall"
