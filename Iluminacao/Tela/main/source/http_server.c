@@ -28,7 +28,7 @@ void start_web_server(void) {
 
     if (httpd_start(&server, &config) == ESP_OK) {
         httpd_uri_t uri_post = {
-            .uri      = "/cmd",
+            .uri      = "/tela",
             .method   = HTTP_POST,
             .handler  = comando_post_handler,
             .user_ctx = NULL
