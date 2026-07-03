@@ -1,0 +1,240 @@
+{
+  "componente": "motor_movel",
+  "resumo": { "total": 39, "pass": 39, "fail": 0 },
+  "testes": [
+    {
+      "nome": "test_init_funciona",
+      "entrada": "motor_init()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado"]
+    },
+    {
+      "nome": "test_enable_pin_inicializa_high",
+      "entrada": "motor_init() deve habilitar o driver",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado"]
+    },
+    {
+      "nome": "test_motor_parar_zera_pwm",
+      "entrada": "motor_parar()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor parado"]
+    },
+    {
+      "nome": "test_parar_desde_subindo",
+      "entrada": "motor_subir() depois motor_parar()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado"]
+    },
+    {
+      "nome": "test_parar_desde_descendo",
+      "entrada": "motor_descer() depois motor_parar()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor descendo", "Motor parado"]
+    },
+    {
+      "nome": "test_motor_subir_ativa_rpwm",
+      "entrada": "motor_subir()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=0 state=1", "Motor parado", "Motor inicializado", "Motor subindo"]
+    },
+    {
+      "nome": "test_subir_repetido_nao_muda",
+      "entrada": "motor_subir() chamado duas vezes",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=0 state=1", "Motor parado", "Motor inicializado", "Motor subindo", "Motor ja esta subindo"]
+    },
+    {
+      "nome": "test_subir_bloqueado_por_fcs",
+      "entrada": "motor_subir() com FCS acionado",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=1 fci=0 state=0", "Motor parado", "Motor inicializado", "Fim de curso superior ja acionado"]
+    },
+    {
+      "nome": "test_subir_desde_descendo_para_primeiro",
+      "entrada": "motor_descer() depois motor_subir()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=0 state=1", "Motor parado", "Motor inicializado", "Motor descendo", "Motor parado", "Motor subindo"]
+    },
+    {
+      "nome": "test_motor_descer_ativa_lpwm",
+      "entrada": "motor_descer()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=200 fcs=0 fci=0 state=2", "Motor parado", "Motor inicializado", "Motor descendo"]
+    },
+    {
+      "nome": "test_descer_repetido_nao_muda",
+      "entrada": "motor_descer() chamado duas vezes",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=200 fcs=0 fci=0 state=2", "Motor parado", "Motor inicializado", "Motor descendo", "Motor ja esta descendo"]
+    },
+    {
+      "nome": "test_descer_bloqueado_por_fci",
+      "entrada": "motor_descer() com FCI acionado",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=1 state=0", "Motor parado", "Motor inicializado", "Fim de curso inferior ja acionado"]
+    },
+    {
+      "nome": "test_descer_desde_subindo_para_primeiro",
+      "entrada": "motor_subir() depois motor_descer()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=200 fcs=0 fci=0 state=2", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor descendo"]
+    },
+    {
+      "nome": "test_fim_superior_nao_acionado_por_padrao",
+      "entrada": "fim_superior() ao iniciar",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado"]
+    },
+    {
+      "nome": "test_fim_inferior_nao_acionado_por_padrao",
+      "entrada": "fim_inferior() ao iniciar",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado"]
+    },
+    {
+      "nome": "test_fim_superior_pode_ser_acionado",
+      "entrada": "motor_set_fcs(1)",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=1 fci=0 state=0", "Motor parado", "Motor inicializado"]
+    },
+    {
+      "nome": "test_fim_inferior_pode_ser_acionado",
+      "entrada": "motor_set_fci(1)",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=1 state=0", "Motor parado", "Motor inicializado"]
+    },
+    {
+      "nome": "test_verificar_fcs_para_motor_subindo",
+      "entrada": "motor_subir() depois motor_set_fcs(1) e verificar_fins_de_curso()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=1 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "FCS acionado por hardware"]
+    },
+    {
+      "nome": "test_verificar_fci_para_motor_descendo",
+      "entrada": "motor_descer() depois motor_set_fci(1) e verificar_fins_de_curso()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=1 state=0", "Motor parado", "Motor inicializado", "Motor descendo", "Motor parado", "FCI acionado por hardware"]
+    },
+    {
+      "nome": "test_verificar_fcs_nao_afeta_motor_parado",
+      "entrada": "motor_parar() depois motor_set_fcs(1) e verificar_fins_de_curso()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=1 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor parado"]
+    },
+    {
+      "nome": "test_verificar_fci_nao_afeta_motor_parado",
+      "entrada": "motor_parar() depois motor_set_fci(1) e verificar_fins_de_curso()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=1 state=0", "Motor parado", "Motor inicializado", "Motor parado"]
+    },
+    {
+      "nome": "test_verificar_fcs_nao_afeta_motor_descendo",
+      "entrada": "motor_descer() depois motor_set_fcs(1) e verificar_fins_de_curso()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=200 fcs=1 fci=0 state=2", "Motor parado", "Motor inicializado", "Motor descendo"]
+    },
+    {
+      "nome": "test_verificar_fci_nao_afeta_motor_subindo",
+      "entrada": "motor_subir() depois motor_set_fci(1) e verificar_fins_de_curso()",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=1 state=1", "Motor parado", "Motor inicializado", "Motor subindo"]
+    },
+    {
+      "nome": "test_alternancia_segura_subir_descer",
+      "entrada": "motor_subir() -> motor_descer() com transicoes seguras",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=200 fcs=0 fci=0 state=2", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor descendo"]
+    },
+    {
+      "nome": "test_alternancia_segura_descer_subir",
+      "entrada": "motor_descer() -> motor_subir() com transicoes seguras",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=0 state=1", "Motor parado", "Motor inicializado", "Motor descendo", "Motor parado", "Motor subindo"]
+    },
+    {
+      "nome": "test_velocidade_constante",
+      "entrada": "Verificar que VELOCIDADE eh constante",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=200 fcs=0 fci=0 state=2", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor descendo"]
+    },
+    {
+      "nome": "test_ambos_fins_acionados_simultaneamente",
+      "entrada": "Acionar FCS e FCI simultaneamente",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=1 fci=1 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "FCS acionado por hardware"]
+    },
+    {
+      "nome": "test_transicao_rapida_subir_descer_subir",
+      "entrada": "Transicao rapida: subir->descer->subir",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=0 state=1", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor descendo", "Motor parado", "Motor subindo"]
+    },
+    {
+      "nome": "test_parada_repetida_nao_causa_problema",
+      "entrada": "motor_parar() chamado multiplas vezes consecutivas",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor parado", "Motor parado", "Motor parado"]
+    },
+    {
+      "nome": "test_fim_curso_durante_movimento_subindo",
+      "entrada": "FCS acionado enquanto motor está SUBINDO",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=1 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "FCS acionado por hardware"]
+    },
+    {
+      "nome": "test_fim_curso_durante_movimento_descendo",
+      "entrada": "FCI acionado enquanto motor está DESCENDO",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=1 state=0", "Motor parado", "Motor inicializado", "Motor descendo", "Motor parado", "FCI acionado por hardware"]
+    },
+    {
+      "nome": "test_liberar_e_reaplicar_fim_curso",
+      "entrada": "Acionar FCS, liberar, e tentar subir novamente",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=0 state=1", "Motor parado", "Motor inicializado", "Fim de curso superior ja acionado", "Motor subindo"]
+    },
+    {
+      "nome": "test_ambos_pwm_nunca_ligados_simultaneamente",
+      "entrada": "Verificar que RPWM e LPWM nunca estao ligados juntos",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor descendo", "Motor parado"]
+    },
+    {
+      "nome": "test_mudanca_fcs_nao_afeta_descendo",
+      "entrada": "motor_descer() e depois acionar FCS",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=200 fcs=1 fci=0 state=2", "Motor parado", "Motor inicializado", "Motor descendo"]
+    },
+    {
+      "nome": "test_mudanca_fci_nao_afeta_subindo",
+      "entrada": "motor_subir() e depois acionar FCI",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=200 lpwm=0 fcs=0 fci=1 state=1", "Motor parado", "Motor inicializado", "Motor subindo"]
+    },
+    {
+      "nome": "test_sequencia_complexa_com_limites",
+      "entrada": "Sequencia complexa: subir->parar->descer->fci->parar->subir->fcs",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=1 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor descendo", "Motor parado", "FCI acionado por hardware", "Motor subindo", "Motor parado", "FCS acionado por hardware"]
+    },
+    {
+      "nome": "test_descer_repetido_com_fci_acionado_no_meio",
+      "entrada": "motor_descer(), depois motor_descer(), depois acionar FCI",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=1 state=0", "Motor parado", "Motor inicializado", "Motor descendo", "Motor ja esta descendo", "Motor parado", "FCI acionado por hardware"]
+    },
+    {
+      "nome": "test_enable_pin_permanece_high",
+      "entrada": "ENABLE_PIN deveria permanecer HIGH durante operacao",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado", "Motor subindo", "Motor parado", "Motor descendo", "Motor parado"]
+    },
+    {
+      "nome": "test_fcs_fci_desligamento_duplicado",
+      "entrada": "Desligar FCS/FCI multiplas vezes",
+      "resultado": "PASS",
+      "saida_obtida": ["rpwm=0 lpwm=0 fcs=0 fci=0 state=0", "Motor parado", "Motor inicializado"]
+    }
+  ]
+}

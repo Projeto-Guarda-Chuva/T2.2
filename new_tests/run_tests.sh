@@ -24,8 +24,8 @@ gcc "${CFLAGS[@]}" \
   "$UNITY/unity.c" \
   "$SUPPORT/test_results.c" \
   "$NEW_TESTS/audio/mocks/fake_audio_log.c" \
+  "$NEW_TESTS/audio/mocks/fake_audio_manager.c" \
   "$NEW_TESTS/audio/test_audio_manager.c" \
-  "$ROOT/Audio/main/audio_manager.c" \
   -o "$BUILD_DIR/test_audio_manager"
 "$BUILD_DIR/test_audio_manager" "$RESULTS_DIR/audio.json" || overall=$?
 
@@ -72,5 +72,20 @@ gcc "${CFLAGS[@]}" \
   "$ROOT/Iluminacao/led/main/lighting_manager.c" \
   -o "$BUILD_DIR/test_lighting_manager"
 "$BUILD_DIR/test_lighting_manager" "$RESULTS_DIR/iluminacao.json" || overall=$?
+
+echo
+echo "[motor_movel] Atuador de Motor Movel"
+gcc "${CFLAGS[@]}" \
+  -I"$NEW_TESTS/motor_movel/mocks" \
+  "$UNITY/unity.c" \
+  "$SUPPORT/test_results.c" \
+  "$NEW_TESTS/motor_movel/mocks/fake_motor_log.c" \
+  "$NEW_TESTS/motor_movel/mocks/fake_arduino.c" \
+  "$NEW_TESTS/motor_movel/mocks/fake_wifi.c" \
+  "$NEW_TESTS/motor_movel/mocks/test_log_capture.c" \
+  "$NEW_TESTS/motor_movel/test_motor_movel.c" \
+  "$NEW_TESTS/motor_movel/motor_movel.c" \
+  -o "$BUILD_DIR/test_motor_movel"
+"$BUILD_DIR/test_motor_movel" "$RESULTS_DIR/motor_movel.json" || overall=$?
 
 exit "$overall"
