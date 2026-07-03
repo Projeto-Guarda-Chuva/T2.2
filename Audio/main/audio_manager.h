@@ -4,14 +4,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
 typedef enum {
-    AUDIO_IDLE,
+    AUDIO_IDLE = 0,
     AUDIO_PLAYING,
     AUDIO_STOPPED,
     AUDIO_ERROR
 } audio_state_t;
-
 
 bool audio_init(void);
 
@@ -30,5 +28,7 @@ bool audio_is_playing(void);
 uint8_t audio_get_volume(void);
 
 const char *audio_get_current_file(void);
+
+const char *audio_get_last_error(void);
 
 #endif

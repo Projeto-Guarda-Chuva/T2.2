@@ -1,24 +1,51 @@
+#include <stdio.h>
+
 #include "audio_manager.h"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 
-void app_main() {
-    audio_init();
+int main(void) {
+    printf("========================================\n");
+    printf("   Teste do Atuador de Áudio\n");
+    printf("========================================\n\n");
 
-    vTaskDelay(pdMS_TO_TICKS(2000));
+    if (!audio_init()) {
+        printf("Erro ao inicializar o atuador!\n");
+        printf("Motivo: %s\n", audio_get_last_error());
+        return 1;
+    }
 
-    audio_set_volume(50);
+    printf("Atuador inicializado com sucesso!\n");
 
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    if (!audio_set_volume(70)) {
+        printf("Erro ao definir volume!\n");
+        printf("%s\n", audio_get_last_error());
+    }
 
-    audio_play();
+    printf("Volume atual: %u%%\n", audio_get_volume());
 
-    vTaskDelay(pdMS_TO_TICKS(5000));
+    printf("\nIniciando reprodução...\n");
 
-    audio_set_volume(80);
+    if (!audio_play("../audios/alerta.mp3")) {
+        printf("Erro ao reproduzir!\n");
+        printf("%s\n", audio_get_last_error());
 
-    vTaskDelay(pdMS_TO_TICKS(3000));
+        audio_deinit();
+        return 1;
+    }
+
+    printf("Arquivo atual: %s\n", audio_get_current_file());
+
+    printf("\nPressione ENTER para parar o áudio...\n");
+
+    getchar();
 
     audio_stop();
+
+    printf("Áudio parado.\n");
+
+    audio_deinit();
+
+    printf("Recursos liberados.\n");
+
+    return 0;
 }
