@@ -1,0 +1,14 @@
+build/
+
+.cmake/
+CMakeCache.txt
+CMakeFiles/
+CMakeSettings.json
+Makefile
+cmake_install.cmake
+*.o
+*.a
+*.so
+*.out
+
+audio_actuator
