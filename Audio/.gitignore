@@ -12,3 +12,5 @@ cmake_install.cmake
 *.out
 
 audio_actuator
+
+audios/
