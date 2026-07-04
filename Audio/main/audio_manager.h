@@ -1,34 +1,29 @@
 #ifndef AUDIO_MANAGER_H
 #define AUDIO_MANAGER_H
 
+#include <glib.h>
+#include <gst/gst.h>
 #include <stdbool.h>
-#include <stdint.h>
 
-typedef enum {
-    AUDIO_IDLE = 0,
-    AUDIO_PLAYING,
-    AUDIO_STOPPED,
-    AUDIO_ERROR
-} audio_state_t;
+typedef struct {
+    GstElement *pipeline;
+    GstElement *source;
+    GstElement *volume_element;
+    GMainLoop *loop;
+    
+    bool is_playing;
+    int current_track; // 0 para Água Viva, 1 para Pôr do Sol
+    double current_volume; // 0.0 a 1.0
+} AudioManager;
 
-bool audio_init(void);
+void audio_manager_init(AudioManager *am, GMainLoop *loop);
 
-void audio_deinit(void);
+void audio_manager_start_playlist(AudioManager *am, const char *initial_file);
 
-bool audio_play(const char *file);
+void audio_manager_stop(AudioManager *am);
 
-void audio_stop(void);
+void audio_manager_set_volume(AudioManager *am, int volume_percent);
 
-bool audio_set_volume(uint8_t volume);
-
-audio_state_t audio_get_state(void);
-
-bool audio_is_playing(void);
-
-uint8_t audio_get_volume(void);
-
-const char *audio_get_current_file(void);
-
-const char *audio_get_last_error(void);
+void audio_manager_cleanup(AudioManager *am);
 
 #endif
