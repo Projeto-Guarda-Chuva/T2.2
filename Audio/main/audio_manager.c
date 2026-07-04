@@ -1,168 +1,137 @@
 #include "audio_manager.h"
+#include <stdio.h>
 
 #include <gst/gst.h>
 
-#include <glib.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-static GstElement *player = NULL;
-
-static audio_state_t state = AUDIO_IDLE;
-
-static uint8_t current_volume = 100;
-
-static char current_file[PATH_MAX] = "";
-
-static char last_error[256] = "";
+static const char *TRACKS[] = {
+    "audios/Modo - Água Viva.mp3",
+    "audios/Modo - Pôr do Sol.mp3"
+};
 
 
-static void audio_set_error(const char *msg) {
-    snprintf(last_error, sizeof(last_error), "%s", msg);
-    state = AUDIO_ERROR;
+// Callback interno para detectar o fim da música e alternar:
+static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
+    AudioManager *am = (AudioManager *)data;
+
+    switch (GST_MESSAGE_TYPE(msg)) {
+        case GST_MESSAGE_EOS: {
+            g_print("Fim da faixa alcançado. Alternando playlist...\n");
+            
+            am->current_track = 1 - am->current_track; 
+            gst_element_set_state(am->pipeline, GST_STATE_READY);
+            
+            gchar *absolute_path = g_canonicalize_filename(TRACKS[am->current_track], NULL);
+            gchar *uri = g_filename_to_uri(absolute_path, NULL, NULL);
+            
+            g_object_set(G_OBJECT(am->pipeline), "uri", uri, NULL);
+            
+            g_free(absolute_path);
+            g_free(uri);
+            
+            g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
+            
+            gst_element_set_state(am->pipeline, GST_STATE_PLAYING);
+            break;
+        }
+
+        case GST_MESSAGE_ERROR: {
+            gchar *debug;
+            GError *error;
+            gst_message_parse_error(msg, &error, &debug);
+            g_printerr("Erro no GStreamer: %s!\n", error->message);
+            g_error_free(error);
+            g_free(debug);
+            am->is_playing = false;
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    return TRUE;
 }
 
 
-bool audio_init(void) {
-    if(player) {
-        return true;
-    }
-
+void audio_manager_init(AudioManager *am, GMainLoop *loop) {
     gst_init(NULL, NULL);
-    player = gst_element_factory_make("playbin", "audio-player");
+    
+    am->loop = loop;
+    am->is_playing = false;
+    am->current_track = 0;
+    am->current_volume = 1.0;
 
-    if(player == NULL) {
-        audio_set_error("Não foi possível criar o playbin!");
-        return false;
-    }
-
-    g_object_set(player, "volume", (gdouble)current_volume / 100.0, NULL);
-    state = AUDIO_IDLE;
-
-    current_file[0] = '\0';
-    last_error[0] = '\0';
-
-    return true;
+    am->pipeline = gst_element_factory_make("playbin", "audio-player");
+    am->source = am->pipeline;
+    
+    // Configura o barramento para capturar o fim da reprodução (EOS):
+    GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(am->pipeline));
+    gst_bus_add_watch(bus, bus_call, am);
+    gst_object_unref(bus);
 }
 
 
-void audio_deinit(void) {
-    if(player == NULL) {
-        return;
+void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
+    if (am->is_playing) {
+        audio_manager_stop(am);
     }
 
-    gst_element_set_state(player, GST_STATE_NULL);
-    gst_object_unref(player);
-    player = NULL;
-
-    current_file[0] = '\0';
-    last_error[0] = '\0';
-
-    state = AUDIO_IDLE;
-}
-
-
-bool audio_play(const char *file) {
-    if(player == NULL) {
-        audio_set_error("Player não inicializado!");
-        return false;
+    if (g_strcmp0(initial_file, TRACKS[1]) == 0) {
+        am->current_track = 1;
+    } 
+    
+    else {
+        am->current_track = 0;
     }
 
-    if(file == NULL || strlen(file) == 0) {
-        audio_set_error("Nome do arquivo inválido!");
-        return false;
-    }
+    g_print("Iniciando playlist com: %s\n", TRACKS[am->current_track]);
 
-    if(audio_is_playing()) {
-        audio_stop();
-    }
+    gst_element_set_state(am->pipeline, GST_STATE_READY);
 
-    char absolute_path[PATH_MAX];
-    if(realpath(file, absolute_path) == NULL) {
-        audio_set_error("Arquivo não encontrado!");
-        return false;
-    }
+    gchar *absolute_path = g_canonicalize_filename(TRACKS[am->current_track], NULL);
+    gchar *uri = g_filename_to_uri(absolute_path, NULL, NULL);
+    
+    g_object_set(G_OBJECT(am->pipeline), "uri", uri, NULL);
+    g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
 
-    gchar *uri = gst_filename_to_uri(absolute_path, NULL);
-    if(uri == NULL) {
-        audio_set_error("Não foi possível criar a URI!");
-        return false;
-    }
-
-    snprintf(current_file, sizeof(current_file), "%s", absolute_path);
-    g_object_set(player, "uri", uri, NULL);
+    // Libera a memória alocada pelas strings da GLib:
+    g_free(absolute_path);
     g_free(uri);
 
-    GstStateChangeReturn ret;
-    ret = gst_element_set_state(player, GST_STATE_PLAYING);
-
-    if(ret == GST_STATE_CHANGE_FAILURE) {
-        audio_set_error("Falha ao iniciar reprodução!");
-        return false;
-    }
-
-    state = AUDIO_PLAYING;
-    return true;
+    gst_element_set_state(am->pipeline, GST_STATE_PLAYING);
+    am->is_playing = true;
 }
 
 
-void audio_stop(void) {
-    if(player == NULL) {
+void audio_manager_stop(AudioManager *am) {
+    if (!am->is_playing) {
         return;
     }
-
-    gst_element_set_state(player, GST_STATE_NULL);
-    current_file[0] = '\0';
-    state = AUDIO_STOPPED;
+    
+    g_print("Parando a reprodução.\n");
+    gst_element_set_state(am->pipeline, GST_STATE_NULL);
+    am->is_playing = false;
 }
 
 
-bool audio_set_volume(uint8_t volume) {
-    if(player == NULL) {
-        audio_set_error("Player não inicializado.");
-        return false;
+void audio_manager_set_volume(AudioManager *am, int volume_percent) {
+    if (volume_percent < 0) {
+        volume_percent = 0;
+    } 
+
+    if (volume_percent > 100) {
+        volume_percent = 100;
     }
 
-    if(volume > 100) {
-        volume = 100;
-    }
-
-    current_volume = volume;
-    g_object_set(player, "volume", (gdouble)volume / 100.0, NULL);
-
-    return true;
+    // GStreamer aceita volume linear onde 1.0 = 100%:
+    am->current_volume = (double)volume_percent / 100.0;
+    
+    g_print("Alterando volume para: %d%%\n", volume_percent);
+    g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
 }
 
 
-audio_state_t audio_get_state(void) {
-    return state;
-}
-
-
-bool audio_is_playing(void) {
-    if(player == NULL) {
-        return false;
-    }
-
-    GstState gst_state;
-    gst_element_get_state(player, &gst_state, NULL, 0);
-
-    return gst_state == GST_STATE_PLAYING;
-}
-
-
-uint8_t audio_get_volume(void) {
-    return current_volume;
-}
-
-
-const char *audio_get_current_file(void) {
-    return current_file;
-}
-
-
-const char *audio_get_last_error(void) {
-    return last_error;
+void audio_manager_cleanup(AudioManager *am) {
+    audio_manager_stop(am);
+    gst_object_unref(am->pipeline);
 }
