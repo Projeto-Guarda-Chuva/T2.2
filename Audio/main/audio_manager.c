@@ -82,7 +82,6 @@ void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
 
     const char *file_to_play = (initial_file != NULL && strlen(initial_file) > 0) ? initial_file : TRACKS[am->current_track];
 
-
 #ifndef IS_TEST_ENVIRONMENT
     gst_element_set_state(am->pipeline, GST_STATE_READY);
     gchar *absolute_path = g_canonicalize_filename(file_to_play, NULL);
@@ -108,13 +107,8 @@ void audio_manager_stop(AudioManager *am) {
 
 
 void audio_manager_set_volume(AudioManager *am, int volume_percent) {
-    if (volume_percent < 0) {
-        volume_percent = 0;
-    }
-    
-    if (volume_percent > 100) {
-        volume_percent = 100;
-    }
+    if (volume_percent < 0) volume_percent = 0;
+    if (volume_percent > 100) volume_percent = 100;
 
     am->current_volume = (double)volume_percent / 100.0;
 
@@ -137,24 +131,24 @@ void audio_init(void) {
     is_initialized = true;
     current_volume_int = 100;
     
-    printf("[INFO] Inicializando Atuador de Audio...\n");
-    printf("[INFO] Componente carregado com sucesso.\n");
-    printf("[INFO] Volume inicial configurado em 100%%\n");
+    printf("[INFO] Inicializando Atuador de Audio...\n"); fflush(stdout);
+    printf("[INFO] Componente carregado com sucesso.\n"); fflush(stdout);
+    printf("[INFO] Volume inicial configurado em 100%%\n"); fflush(stdout);
 }
 
 
 void audio_play(const char *filename) {
     if (!is_initialized) {
-        printf("[WARN] Componente nao inicializado!\n");
+        printf("[WARN] Componente nao inicializado!\n"); fflush(stdout);
         return;
     }
 
     if (filename == NULL || strlen(filename) == 0) {
-        printf("[ERROR] Arquivo invalido para reproducao.\n");
+        printf("Error: Arquivo invalido para reproducao.\n"); fflush(stdout);
         return;
     }
 
-    printf("[INFO] Reproduzindo arquivo: %s\n", filename);
+    printf("[INFO] Reproduzindo arquivo: %s\n", filename); fflush(stdout);
     audio_manager_start_playlist(&global_am, filename);
 }
 
@@ -170,11 +164,11 @@ void audio_play_default(void) {
 
 void audio_stop(void) {
     if (!global_am.is_playing) {
-        printf("[WARN] Nenhum audio esta sendo reproduzido.\n");
+        printf("[WARN] Nenhum audio esta sendo reproduzido.\n"); fflush(stdout);
         return;
     }
 
-    printf("[INFO] Parando audio...\n");
+    printf("[INFO] Parando audio...\n"); fflush(stdout);
     audio_manager_stop(&global_am);
 }
 
@@ -185,16 +179,16 @@ bool audio_is_playing(void) {
 
 
 void audio_set_volume(int8_t volume) {
-    uint8_t u_volume = (uint8_t)volume;
-
-    if (u_volume > 100) {
-        printf("[WARN] Volume %d invalido! Ajustando para 100.\n", u_volume);
+    if (volume < 0 || volume > 100) {
+        uint8_t raw_val = (uint8_t)volume;
+        printf("[WARN] Volume %d invalido! Ajustando para 100.\n", raw_val); fflush(stdout);
         audio_manager_set_volume(&global_am, 100);
         current_volume_int = 100;
         return;
     }
 
-    printf("[INFO] Alterando volume de %d para %d\n", current_volume_int, u_volume);
+    uint8_t u_volume = (uint8_t)volume;
+    printf("[INFO] Alterando volume de %d para %d\n", current_volume_int, u_volume); fflush(stdout);
     audio_manager_set_volume(&global_am, u_volume);
     current_volume_int = u_volume;
 }
