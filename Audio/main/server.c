@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
 #include <microhttpd.h>
 #include <json-c/json.h>
 #include <glib.h>
@@ -112,7 +112,7 @@ static enum MHD_Result answer_to_connection(void *cls, struct MHD_Connection *co
 
 bool server_start(HttpServer *server, int port, AudioManager *am) {
     server->am = am;
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     server->http_daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, port, NULL, NULL,
                                       &answer_to_connection, server, MHD_OPTION_END);
     return (server->http_daemon != NULL);
@@ -123,7 +123,7 @@ bool server_start(HttpServer *server, int port, AudioManager *am) {
 }
 
 void server_stop(HttpServer *server) {
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     if (server->http_daemon) {
         MHD_stop_daemon(server->http_daemon);
     }

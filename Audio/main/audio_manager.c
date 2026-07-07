@@ -13,7 +13,7 @@ static bool is_initialized = false;
 static uint8_t current_volume_int = 100;
 
 
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
 
 static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
     AudioManager *am = (AudioManager *)data;
@@ -47,7 +47,7 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
 
 
 void audio_manager_init(AudioManager *am, void *loop) {
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     gst_init(NULL, NULL);
     am->loop = (GMainLoop *)loop;
     am->pipeline = gst_element_factory_make("playbin", "audio-player");
@@ -74,7 +74,7 @@ void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
     else {
         am->current_track = 0;
     }
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     gst_element_set_state(am->pipeline, GST_STATE_READY);
     gchar *absolute_path = g_canonicalize_filename(TRACKS[am->current_track], NULL);
     gchar *uri = g_filename_to_uri(absolute_path, NULL, NULL);
@@ -91,7 +91,7 @@ void audio_manager_stop(AudioManager *am) {
     if (!am->is_playing) {
         return;
     }
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     gst_element_set_state(am->pipeline, GST_STATE_NULL);
 #endif
     am->is_playing = false;
@@ -109,7 +109,7 @@ void audio_manager_set_volume(AudioManager *am, int volume_percent) {
 
     am->current_volume = (double)volume_percent / 100.0;
 
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
 #endif
 }
@@ -118,7 +118,7 @@ void audio_manager_set_volume(AudioManager *am, int volume_percent) {
 void audio_manager_cleanup(AudioManager *am) {
     audio_manager_stop(am);
 
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     if (am->pipeline) gst_object_unref(am->pipeline);
 #endif
 }

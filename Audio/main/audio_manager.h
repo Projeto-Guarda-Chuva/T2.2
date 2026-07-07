@@ -4,13 +4,17 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifndef TEST_ENV
+#if defined(UNITY_VERSION_NUMBER) || defined(UNITY_H) || defined(TEST_ENV)
+    #define IS_TEST_ENVIRONMENT
+#endif
+
+#ifndef IS_TEST_ENVIRONMENT
 #include <glib.h>
 #include <gst/gst.h>
 #endif
 
 typedef struct {
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     GstElement *pipeline;
     GstElement *source;
     GstElement *volume_element;

@@ -3,7 +3,7 @@
 #include "audio_manager.h"
 #include "server.h"
 
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
 #include <glib.h>
 #endif
 
@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
     audio_init();
 
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
     GMainLoop *loop = g_main_loop_new(NULL, FALSE);
 
     if (!server_start(&server, 8080, NULL)) {

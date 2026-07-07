@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "audio_manager.h"
 
-#ifndef TEST_ENV
+#ifndef IS_TEST_ENVIRONMENT
 #include <microhttpd.h>
 typedef struct {
     struct MHD_Daemon *http_daemon;
