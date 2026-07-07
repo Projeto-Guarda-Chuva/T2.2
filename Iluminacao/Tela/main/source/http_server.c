@@ -14,9 +14,12 @@ static esp_err_t comando_post_handler(httpd_req_t *req) {
 
     ret = httpd_req_recv(req, buf, remaining);
     if (ret <= 0) return ESP_FAIL;
-    buf[ret] = '\0'; // Fecha a string
+    buf[ret] = '\0';
 
-    process_command_json(buf); // Envia para o processador
+    if (process_command_json(buf) != ESP_OK) {
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
 
     httpd_resp_sendstr(req, "{\"status\": \"ok\"}");
     return ESP_OK;
