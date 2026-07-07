@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include "audio_manager.h"
 
+#ifndef PRODUCTION_ENV
+    #define IS_TEST_ENVIRONMENT
+#endif
+
 #ifndef IS_TEST_ENVIRONMENT
 #include <microhttpd.h>
 typedef struct {
@@ -11,7 +15,6 @@ typedef struct {
     AudioManager *am;
 } HttpServer;
 #else
-
 typedef struct {
     void *http_daemon;
     void *am;

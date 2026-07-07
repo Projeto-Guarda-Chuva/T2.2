@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef PRODUCTION_ENV
+    #define IS_TEST_ENVIRONMENT
+#endif
+
 #ifndef IS_TEST_ENVIRONMENT
 #include <microhttpd.h>
 #include <json-c/json.h>
@@ -14,7 +18,6 @@ struct connection_info {
     char *data;
     size_t size;
 };
-
 
 static void handle_audio_command(const char *json_str) {
     struct json_object *parsed_json = json_tokener_parse(json_str);
@@ -38,7 +41,6 @@ static void handle_audio_command(const char *json_str) {
                 if (json_object_object_get_ex(parsed_json, "file", &file_obj)) {
                     file_name = json_object_get_string(file_obj);
                 }
-
                 audio_play(file_name);
                 break;
             }
@@ -47,7 +49,6 @@ static void handle_audio_command(const char *json_str) {
                 struct json_object *vol_obj;
                 if (json_object_object_get_ex(parsed_json, "volume", &vol_obj)) {
                     int volume = json_object_get_int(vol_obj);
-  
                     audio_set_volume((int8_t)volume);
                 }
                 break;
@@ -58,15 +59,14 @@ static void handle_audio_command(const char *json_str) {
                 break;
         }
     }
-
     json_object_put(parsed_json);
 }
 
 
-static enum MHD_Result answer_to_connection(void *cls, struct MHD_Connection *connection,
-                                           const char *url, const char *method,
-                                           const char *version, const char *upload_data,
-                                           size_t *upload_data_size, void **con_cls) {
+static int answer_to_connection(void *cls, struct MHD_Connection *connection,
+                                const char *url, const char *method,
+                                const char *version, const char *upload_data,
+                                size_t *upload_data_size, void **con_cls) {
     if (strcmp(url, "/audio") != 0 || strcmp(method, "POST") != 0) {
         struct MHD_Response *response = MHD_create_response_from_buffer(17, "Endpoint invalido", MHD_RESPMEM_PERSISTENT);
         MHD_add_response_header(response, "Content-Type", "text/plain");
@@ -110,6 +110,7 @@ static enum MHD_Result answer_to_connection(void *cls, struct MHD_Connection *co
 }
 #endif
 
+
 bool server_start(HttpServer *server, int port, AudioManager *am) {
     server->am = am;
 #ifndef IS_TEST_ENVIRONMENT
@@ -121,6 +122,7 @@ bool server_start(HttpServer *server, int port, AudioManager *am) {
     return true;
 #endif
 }
+
 
 void server_stop(HttpServer *server) {
 #ifndef IS_TEST_ENVIRONMENT

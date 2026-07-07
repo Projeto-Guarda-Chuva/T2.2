@@ -32,3 +32,5 @@ target_link_libraries(audio_actuator
     ${MICROHTTPD_LIB}
     ${JSONC_LIB}
 )
+
+target_compile_definitions(audio_actuator PRIVATE PRODUCTION_ENV)

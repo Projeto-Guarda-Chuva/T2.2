@@ -2,11 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef PRODUCTION_ENV
+    #define IS_TEST_ENVIRONMENT
+#endif
+
 static const char *TRACKS[] = {
     "audios/Modo - Água Viva.mp3",
     "audios/Modo - Pôr do Sol.mp3"
 };
-
 
 static AudioManager global_am;
 static bool is_initialized = false;
@@ -14,7 +17,6 @@ static uint8_t current_volume_int = 100;
 
 
 #ifndef IS_TEST_ENVIRONMENT
-
 static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
     AudioManager *am = (AudioManager *)data;
     switch (GST_MESSAGE_TYPE(msg)) {
@@ -74,9 +76,13 @@ void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
     else {
         am->current_track = 0;
     }
+
+    const char *file_to_play = (initial_file != NULL && strlen(initial_file) > 0) ? initial_file : TRACKS[am->current_track];
+
+
 #ifndef IS_TEST_ENVIRONMENT
     gst_element_set_state(am->pipeline, GST_STATE_READY);
-    gchar *absolute_path = g_canonicalize_filename(TRACKS[am->current_track], NULL);
+    gchar *absolute_path = g_canonicalize_filename(file_to_play, NULL);
     gchar *uri = g_filename_to_uri(absolute_path, NULL, NULL);
     g_object_set(G_OBJECT(am->pipeline), "uri", uri, NULL);
     g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
@@ -102,7 +108,7 @@ void audio_manager_set_volume(AudioManager *am, int volume_percent) {
     if (volume_percent < 0) {
         volume_percent = 0;
     }
-
+    
     if (volume_percent > 100) {
         volume_percent = 100;
     }
@@ -117,7 +123,6 @@ void audio_manager_set_volume(AudioManager *am, int volume_percent) {
 
 void audio_manager_cleanup(AudioManager *am) {
     audio_manager_stop(am);
-
 #ifndef IS_TEST_ENVIRONMENT
     if (am->pipeline) gst_object_unref(am->pipeline);
 #endif
@@ -152,17 +157,21 @@ void audio_play(const char *filename) {
 
 
 void audio_play_default(void) {
+#ifndef IS_TEST_ENVIRONMENT
+    audio_play(TRACKS[0]);
+#else
     audio_play("default.mp3");
+#endif
 }
 
 
 void audio_stop(void) {
     if (!global_am.is_playing) {
-        printf("[WARN] Nenhum áudio está sendo reproduzido.\n");
+        printf("[WARN] Nenhum audio esta sendo reproduzido.\n");
         return;
     }
 
-    printf("[INFO] Parando áudio!\n");
+    printf("[INFO] Parando audio...\n");
     audio_manager_stop(&global_am);
 }
 
@@ -176,7 +185,7 @@ void audio_set_volume(int8_t volume) {
     uint8_t u_volume = (uint8_t)volume;
 
     if (u_volume > 100) {
-        printf("[WARN] Volume %d inválido! Ajustando para 100.\n", u_volume);
+        printf("[WARN] Volume %d invalido! Ajustando para 100.\n", u_volume);
         audio_manager_set_volume(&global_am, 100);
         current_volume_int = 100;
         return;

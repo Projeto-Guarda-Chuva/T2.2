@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#if defined(UNITY_VERSION_NUMBER) || defined(UNITY_H) || defined(TEST_ENV)
+#ifndef PRODUCTION_ENV
     #define IS_TEST_ENVIRONMENT
 #endif
 

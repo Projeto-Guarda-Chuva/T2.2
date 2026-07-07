@@ -3,6 +3,10 @@
 #include "audio_manager.h"
 #include "server.h"
 
+#ifndef PRODUCTION_ENV
+    #define IS_TEST_ENVIRONMENT
+#endif
+
 #ifndef IS_TEST_ENVIRONMENT
 #include <glib.h>
 #endif
@@ -17,6 +21,7 @@ int main(int argc, char **argv) {
 
     if (!server_start(&server, 8080, NULL)) {
         fprintf(stderr, "[ERROR] Falha ao iniciar o servidor HTTP.\n");
+        g_main_loop_unref(loop);
         return 1;
     }
 
