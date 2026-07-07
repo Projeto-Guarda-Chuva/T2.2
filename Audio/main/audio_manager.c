@@ -6,6 +6,9 @@
     #define IS_TEST_ENVIRONMENT
 #endif
 
+#ifndef AUDIO_MANAGER_C_GUARD
+#define AUDIO_MANAGER_C_GUARD
+
 static const char *TRACKS[] = {
     "audios/Modo - Água Viva.mp3",
     "audios/Modo - Pôr do Sol.mp3"
@@ -195,3 +198,5 @@ void audio_set_volume(int8_t volume) {
     audio_manager_set_volume(&global_am, u_volume);
     current_volume_int = u_volume;
 }
+
+#endif

@@ -52,4 +52,8 @@ bool audio_is_playing(void);
 
 void audio_set_volume(int8_t volume);
 
+#ifdef IS_TEST_ENVIRONMENT
+    #include "audio_manager.c"
+#endif
+
 #endif
