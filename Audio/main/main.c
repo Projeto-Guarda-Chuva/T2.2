@@ -1,30 +1,34 @@
-#include <glib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "audio_manager.h"
 #include "server.h"
 
-int main(int argc, char *argv[]) {
-    GMainLoop *loop = g_main_loop_new(NULL, FALSE);
-    AudioManager am;
+#ifndef TEST_ENV
+#include <glib.h>
+#endif
+
+int main(int argc, char **argv) {
     HttpServer server;
 
-    g_print("Inicializando Atuador de Audio...\n");
-    audio_manager_init(&am, loop);
+    audio_init();
 
-    if (!server_start(&server, 8080, &am)) {
-        g_printerr("Falha ao iniciar o servidor HTTP.\n");
-        audio_manager_cleanup(&am);
-        g_main_loop_unref(loop);
+#ifndef TEST_ENV
+    GMainLoop *loop = g_main_loop_new(NULL, FALSE);
+
+    if (!server_start(&server, 8080, NULL)) {
+        fprintf(stderr, "[ERROR] Falha ao iniciar o servidor HTTP.\n");
         return 1;
     }
 
-    g_print("Servidor HTTP rodando na porta 8080. Aguardando requisicoes...\n");
-    
+    printf("[INFO] Servidor rodando na porta 8080. Aguardando JSON via POST...\n");
     g_main_loop_run(loop);
 
     server_stop(&server);
-    audio_manager_cleanup(&am);
     g_main_loop_unref(loop);
+#else
+    server_start(&server, 8080, NULL);
+    server_stop(&server);
+#endif
 
     return 0;
 }
