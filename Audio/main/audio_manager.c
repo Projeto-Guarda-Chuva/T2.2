@@ -65,7 +65,6 @@ void audio_manager_init(AudioManager *am, void *loop) {
     am->is_playing = false;
     am->current_track = 0;
     am->current_volume = 1.0;
-    is_initialized = false; 
 }
 
 
@@ -76,15 +75,13 @@ void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
     
     if (initial_file && strcmp(initial_file, TRACKS[1]) == 0) {
         am->current_track = 1;
-    } 
-    
-    else {
+    } else {
         am->current_track = 0;
     }
 
-    const char *file_to_play = (initial_file != NULL && strlen(initial_file) > 0) ? initial_file : TRACKS[am->current_track];
 
 #ifndef IS_TEST_ENVIRONMENT
+    const char *file_to_play = (initial_file != NULL && strlen(initial_file) > 0) ? initial_file : TRACKS[am->current_track];
     gst_element_set_state(am->pipeline, GST_STATE_READY);
     gchar *absolute_path = g_canonicalize_filename(file_to_play, NULL);
     gchar *uri = g_filename_to_uri(absolute_path, NULL, NULL);
@@ -98,9 +95,6 @@ void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
 
 
 void audio_manager_stop(AudioManager *am) {
-    if (!am->is_playing) {
-        return;
-    }
 #ifndef IS_TEST_ENVIRONMENT
     gst_element_set_state(am->pipeline, GST_STATE_NULL);
 #endif
@@ -147,7 +141,7 @@ void audio_play(const char *filename) {
     }
 
     if (filename == NULL || strlen(filename) == 0) {
-        printf("Error: Arquivo invalido para reproducao.\n"); fflush(stdout);
+        printf("[ERROR] Arquivo invalido para reproducao.\n"); fflush(stdout);
         return;
     }
 
@@ -162,8 +156,10 @@ void audio_play_default(void) {
         return;
     }
 
+
 #ifndef IS_TEST_ENVIRONMENT
     audio_play(TRACKS[0]);
+#define AUDIO_DEFAULT_PLAYED
 #else
     audio_play("default.mp3");
 #endif
@@ -191,7 +187,6 @@ bool audio_is_playing(void) {
         printf("[WARN] Componente nao inicializado!\n"); fflush(stdout);
         return false;
     }
-
     return global_am.is_playing;
 }
 
@@ -203,8 +198,7 @@ void audio_set_volume(int volume) {
     }
 
     if (volume < 0 || volume > 100) {
-        uint8_t raw_val = (uint8_t)volume;
-        printf("[WARN] Volume %d invalido! Ajustando para 100.\n", raw_val); fflush(stdout);
+        printf("[WARN] Volume %d invalido! Ajustando para 100.\n", volume); fflush(stdout);
         audio_manager_set_volume(&global_am, 100);
         current_volume_int = 100;
         return;
