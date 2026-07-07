@@ -157,6 +157,11 @@ void audio_play(const char *filename) {
 
 
 void audio_play_default(void) {
+    if (!is_initialized) {
+        printf("[WARN] Componente nao inicializado!\n"); fflush(stdout);
+        return;
+    }
+
 #ifndef IS_TEST_ENVIRONMENT
     audio_play(TRACKS[0]);
 #else
@@ -166,6 +171,11 @@ void audio_play_default(void) {
 
 
 void audio_stop(void) {
+    if (!is_initialized) {
+        printf("[WARN] Componente nao inicializado!\n"); fflush(stdout);
+        return;
+    }
+
     if (!global_am.is_playing) {
         printf("[WARN] Nenhum audio esta sendo reproduzido.\n"); fflush(stdout);
         return;
@@ -177,11 +187,21 @@ void audio_stop(void) {
 
 
 bool audio_is_playing(void) {
+    if (!is_initialized) {
+        printf("[WARN] Componente nao inicializado!\n"); fflush(stdout);
+        return false;
+    }
+
     return global_am.is_playing;
 }
 
 
-void audio_set_volume(int8_t volume) {
+void audio_set_volume(int volume) {
+    if (!is_initialized) {
+        printf("[WARN] Componente nao inicializado!\n"); fflush(stdout);
+        return;
+    }
+
     if (volume < 0 || volume > 100) {
         uint8_t raw_val = (uint8_t)volume;
         printf("[WARN] Volume %d invalido! Ajustando para 100.\n", raw_val); fflush(stdout);
@@ -190,10 +210,9 @@ void audio_set_volume(int8_t volume) {
         return;
     }
 
-    uint8_t u_volume = (uint8_t)volume;
-    printf("[INFO] Alterando volume de %d para %d\n", current_volume_int, u_volume); fflush(stdout);
-    audio_manager_set_volume(&global_am, u_volume);
-    current_volume_int = u_volume;
+    printf("[INFO] Alterando volume de %d para %d\n", current_volume_int, volume); fflush(stdout);
+    audio_manager_set_volume(&global_am, volume);
+    current_volume_int = volume;
 }
 
 #endif

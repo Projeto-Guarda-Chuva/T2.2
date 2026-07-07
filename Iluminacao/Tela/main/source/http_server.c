@@ -2,7 +2,7 @@
 #include "protocol.h"
 #include "esp_http_server.h"
 #include "esp_log.h"
-#include "cJSON.h"
+#include <string.h>
 
 static esp_err_t comando_post_handler(httpd_req_t *req) {
     char buf[128];
@@ -15,22 +15,18 @@ static esp_err_t comando_post_handler(httpd_req_t *req) {
 
     int ret = httpd_req_recv(req, buf, remaining);
     if (ret <= 0) return ESP_FAIL;
-    buf[ret] = '\0'; 
+    buf[ret] = '\0';
 
-    cJSON *checker = cJSON_Parse(buf);
-    if (!checker) {
+    if (buf[0] != '{') {
         httpd_resp_send_500(req);
         return ESP_FAIL;
     }
-    
-    cJSON_Delete(checker);
 
     process_command_json(buf); 
 
     httpd_resp_sendstr(req, "{\"status\": \"ok\"}");
     return ESP_OK;
 }
-
 
 void start_web_server(void) {
     httpd_handle_t server = NULL;
