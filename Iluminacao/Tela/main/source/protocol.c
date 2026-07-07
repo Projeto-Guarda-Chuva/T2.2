@@ -6,11 +6,11 @@
 
 static const char *TAG = "PROTOCOLO";
 
-esp_err_t process_command_json(const char *json_str) {
+void process_command_json(const char *json_str) {
     cJSON *root = cJSON_Parse(json_str);
     if (!root) {
         ESP_LOGE(TAG, "Erro ao ler JSON");
-        return ESP_FAIL;
+        return;
     }
 
     cJSON *id_item = cJSON_GetObjectItem(root, "id");
@@ -43,5 +43,4 @@ esp_err_t process_command_json(const char *json_str) {
         }
     }
     cJSON_Delete(root);
-    return ESP_OK;
 }

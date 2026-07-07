@@ -61,9 +61,11 @@ void audio_manager_init(AudioManager *am, void *loop) {
     gst_bus_add_watch(bus, bus_call, am);
     gst_object_unref(bus);
 #endif
+    (void)loop;
     am->is_playing = false;
     am->current_track = 0;
     am->current_volume = 1.0;
+    is_initialized = false; 
 }
 
 
@@ -131,9 +133,10 @@ void audio_init(void) {
     is_initialized = true;
     current_volume_int = 100;
     
-    printf("[INFO] Inicializando Atuador de Audio...\n"); fflush(stdout);
-    printf("[INFO] Componente carregado com sucesso.\n"); fflush(stdout);
-    printf("[INFO] Volume inicial configurado em 100%%\n"); fflush(stdout);
+    printf("[INFO] Inicializando Atuador de Audio...\n");
+    printf("[INFO] Componente carregado com sucesso.\n");
+    printf("[INFO] Volume inicial configurado em 100%%\n");
+    fflush(stdout);
 }
 
 
