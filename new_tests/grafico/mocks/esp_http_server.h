@@ -38,6 +38,7 @@ typedef struct {
     int         start_count;
     int         register_count;
     httpd_uri_t last_uri;
+    char        last_uri_path[64];
     int         req_recv_count;
     char        next_body[256];
     int         sendstr_count;
