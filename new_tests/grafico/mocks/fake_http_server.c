@@ -27,7 +27,7 @@ esp_err_t httpd_register_uri_handler(httpd_handle_t handle, const httpd_uri_t *u
         g_http_spy.last_uri = *uri_handler; 
         
         if (uri_handler->uri) {
-            snprintf(g_http_spy.last_uri_path, sizeof(g_http_spy.last_uri_path), "%s", uri_handler->uri);
+            snprintf(g_http_spy.last_uri_path, sizeof(g_http_spy.last_uri_path), "%s", uri_handler->uri);            
             g_http_spy.last_uri.uri = g_http_spy.last_uri_path;
         }
     }
