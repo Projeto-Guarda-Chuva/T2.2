@@ -1,17 +1,7 @@
 #include "audio_manager.h"
+#include "esp_log.h"
 #include <stdio.h>
 #include <string.h>
-
-// Macros de log da suíte de testes (se não existirem no header, caem no printf padrão)
-#ifndef TEST_LOG_INFO
-    #define TEST_LOG_INFO(fmt, ...)  printf("[INFO] " fmt "\n", ##__VA_ARGS__); fflush(stdout)
-#endif
-#ifndef TEST_LOG_WARN
-    #define TEST_LOG_WARN(fmt, ...)  printf("[WARN] " fmt "\n", ##__VA_ARGS__); fflush(stdout)
-#endif
-#ifndef TEST_LOG_ERROR
-    #define TEST_LOG_ERROR(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__); fflush(stdout)
-#endif
 
 #ifndef PRODUCTION_ENV
     #define IS_TEST_ENVIRONMENT
@@ -20,6 +10,8 @@
 #ifndef AUDIO_MANAGER_C_GUARD
 #define AUDIO_MANAGER_C_GUARD
 
+static const char *TAG = "AUDIO_MANAGER";
+
 static const char *TRACKS[] = {
     "audios/Modo - Água Viva.mp3",
     "audios/Modo - Pôr do Sol.mp3"
@@ -27,14 +19,15 @@ static const char *TRACKS[] = {
 
 static AudioManager global_am;
 static bool is_initialized = false;
-static uint8_t current_volume_int = 100;
+static int current_volume_int = 100;
+
 
 #ifndef IS_TEST_ENVIRONMENT
 static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
     AudioManager *am = (AudioManager *)data;
     switch (GST_MESSAGE_TYPE(msg)) {
         case GST_MESSAGE_EOS: {
-            TEST_LOG_INFO("Fim da faixa alcançado. Alternando playlist...");
+            ESP_LOGI(TAG, "Fim da faixa alcançado. Alternando playlist...");
             am->current_track = 1 - am->current_track; 
             gst_element_set_state(am->pipeline, GST_STATE_READY);
             gchar *absolute_path = g_canonicalize_filename(TRACKS[am->current_track], NULL);
@@ -48,7 +41,7 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
         case GST_MESSAGE_ERROR: {
             gchar *debug; GError *error;
             gst_message_parse_error(msg, &error, &debug);
-            TEST_LOG_ERROR("Erro no GStreamer: %s!", error->message);
+            ESP_LOGE(TAG, "Erro no GStreamer: %s!", error->message);
             g_error_free(error); g_free(debug);
             am->is_playing = false;
             break;
@@ -58,6 +51,7 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
     return TRUE;
 }
 #endif
+
 
 void audio_manager_init(AudioManager *am, void *loop) {
 #ifndef IS_TEST_ENVIRONMENT
@@ -75,6 +69,7 @@ void audio_manager_init(AudioManager *am, void *loop) {
     am->current_volume = 1.0;
 }
 
+
 void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
     if (am->is_playing) {
         audio_manager_stop(am);
@@ -85,6 +80,7 @@ void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
     } else {
         am->current_track = 0;
     }
+
 
 #ifndef IS_TEST_ENVIRONMENT
     const char *file_to_play = (initial_file != NULL && strlen(initial_file) > 0) ? initial_file : TRACKS[am->current_track];
@@ -99,12 +95,14 @@ void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
     am->is_playing = true;
 }
 
+
 void audio_manager_stop(AudioManager *am) {
 #ifndef IS_TEST_ENVIRONMENT
     gst_element_set_state(am->pipeline, GST_STATE_NULL);
 #endif
     am->is_playing = false;
 }
+
 
 void audio_manager_set_volume(AudioManager *am, int volume_percent) {
     if (volume_percent < 0) volume_percent = 0;
@@ -115,83 +113,88 @@ void audio_manager_set_volume(AudioManager *am, int volume_percent) {
 #endif
 }
 
+
 void audio_init(void) {
     audio_manager_init(&global_am, NULL);
     is_initialized = true;
     current_volume_int = 100;
     
-    TEST_LOG_INFO("Inicializando Atuador de Audio...");
-    TEST_LOG_INFO("Componente carregado com sucesso.");
-    TEST_LOG_INFO("Volume inicial configurado em 100%%");
+    ESP_LOGI(TAG, "Inicializando Atuador de Audio...");
+    ESP_LOGI(TAG, "Componente carregado com sucesso.");
+    ESP_LOGI(TAG, "Volume inicial configurado em 100%%");
 }
+
 
 void audio_play(const char *filename) {
     if (!is_initialized) {
-        TEST_LOG_WARN("Componente nao inicializado!");
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return;
     }
 
     if (filename == NULL || strlen(filename) == 0) {
-        TEST_LOG_ERROR("Arquivo invalido para reproducao.");
+        ESP_LOGE(TAG, "Arquivo invalido para reproducao.");
         return;
     }
 
-    TEST_LOG_INFO("Reproduzindo arquivo: %s", filename);
+    ESP_LOGI(TAG, "Reproduzindo arquivo: %s", filename);
     audio_manager_start_playlist(&global_am, filename);
 }
 
+
 void audio_play_default(void) {
     if (!is_initialized) {
-        TEST_LOG_WARN("Componente nao inicializado!");
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return;
     }
 
-#ifndef IS_TEST_ENVIRONMENT
-    audio_play(TRACKS[0]);
-#else
     audio_play("default.mp3");
-#endif
 }
+
 
 void audio_stop(void) {
     if (!is_initialized) {
-        TEST_LOG_WARN("Componente nao inicializado!");
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return;
     }
 
     if (!global_am.is_playing) {
-        TEST_LOG_WARN("Nenhum audio esta sendo reproduzido.");
+        ESP_LOGW(TAG, "Nenhum audio esta sendo reproduzido.");
         return;
     }
 
-    TEST_LOG_INFO("Parando audio...");
+    ESP_LOGI(TAG, "Parando audio...");
     audio_manager_stop(&global_am);
 }
 
+
 bool audio_is_playing(void) {
     if (!is_initialized) {
-        TEST_LOG_WARN("Componente nao inicializado!");
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return false;
     }
+
     return global_am.is_playing;
 }
 
+
 void audio_set_volume(int volume) {
     if (!is_initialized) {
-        TEST_LOG_WARN("Componente nao inicializado!");
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return;
     }
 
-    if (volume < 0 || volume > 100) {
-        TEST_LOG_WARN("Volume %d invalido! Ajustando para 100.", volume);
+    uint8_t volume_u8 = (uint8_t)volume;
+
+    if (volume_u8 > 100) {
+        ESP_LOGW(TAG, "Volume %d invalido! Ajustando para 100.", volume_u8);
         audio_manager_set_volume(&global_am, 100);
         current_volume_int = 100;
         return;
     }
 
-    TEST_LOG_INFO("Alterando volume de %d para %d", current_volume_int, volume);
-    audio_manager_set_volume(&global_am, volume);
-    current_volume_int = volume;
+    ESP_LOGI(TAG, "Alterando volume de %d para %d", current_volume_int, volume_u8);
+    audio_manager_set_volume(&global_am, volume_u8);
+    current_volume_int = volume_u8;
 }
 
 #endif
