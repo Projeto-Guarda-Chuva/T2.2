@@ -1,3 +1,6 @@
+#ifndef AUDIO_MANAGER_C_GUARD
+#define AUDIO_MANAGER_C_GUARD
+
 #include "audio_manager.h"
 #include "esp_log.h"
 #include <stdio.h>
@@ -6,9 +9,6 @@
 #ifndef PRODUCTION_ENV
     #define IS_TEST_ENVIRONMENT
 #endif
-
-#ifndef AUDIO_MANAGER_C_GUARD
-#define AUDIO_MANAGER_C_GUARD
 
 static const char *TAG = "AUDIO_MANAGER";
 
