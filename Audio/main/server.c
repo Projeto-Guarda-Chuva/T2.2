@@ -63,10 +63,10 @@ static void handle_audio_command(const char *json_str) {
 }
 
 
-static int answer_to_connection(void *cls, struct MHD_Connection *connection,
-                                const char *url, const char *method,
-                                const char *version, const char *upload_data,
-                                size_t *upload_data_size, void **con_cls) {
+static enum MHD_Result answer_to_connection(void *cls, struct MHD_Connection *connection,
+                                            const char *url, const char *method,
+                                            const char *version, const char *upload_data,
+                                            size_t *upload_data_size, void **con_cls) {
     if (strcmp(url, "/audio") != 0 || strcmp(method, "POST") != 0) {
         struct MHD_Response *response = MHD_create_response_from_buffer(17, "Endpoint invalido", MHD_RESPMEM_PERSISTENT);
         MHD_add_response_header(response, "Content-Type", "text/plain");

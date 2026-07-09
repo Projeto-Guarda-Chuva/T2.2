@@ -2,9 +2,13 @@
 #define AUDIO_MANAGER_C_GUARD
 
 #include "audio_manager.h"
-#include "esp_log.h"
 #include <stdio.h>
 #include <string.h>
+
+// Macros para emular o comportamento do ESP_LOG no Linux da Jetson:
+#define ESP_LOGI(tag, fmt, ...) printf("[%s] " fmt "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGE(tag, fmt, ...) fprintf(stderr, "[%s] ERR: " fmt "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGW(tag, fmt, ...) printf("[%s] WARN: " fmt "\n", tag, ##__VA_ARGS__)
 
 #ifndef PRODUCTION_ENV
     #define IS_TEST_ENVIRONMENT

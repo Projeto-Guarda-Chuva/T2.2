@@ -19,13 +19,13 @@ int main(int argc, char **argv) {
 #ifndef IS_TEST_ENVIRONMENT
     GMainLoop *loop = g_main_loop_new(NULL, FALSE);
 
-    if (!server_start(&server, 8080, NULL)) {
+    if (!server_start(&server, 8082, NULL)) {
         fprintf(stderr, "[ERROR] Falha ao iniciar o servidor HTTP.\n");
         g_main_loop_unref(loop);
         return 1;
     }
 
-    printf("[INFO] Servidor rodando na porta 8080. Aguardando JSON via POST...\n");
+    printf("[INFO] Servidor rodando na porta 8082. Aguardando JSON via POST...\n");
     g_main_loop_run(loop);
 
     server_stop(&server);
