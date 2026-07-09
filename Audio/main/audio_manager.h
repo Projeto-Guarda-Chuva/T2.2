@@ -4,31 +4,56 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum {
-    AUDIO_IDLE = 0,
-    AUDIO_PLAYING,
-    AUDIO_STOPPED,
-    AUDIO_ERROR
-} audio_state_t;
+#ifndef PRODUCTION_ENV
+    #define IS_TEST_ENVIRONMENT
+#endif
 
-bool audio_init(void);
+#ifndef IS_TEST_ENVIRONMENT
+#include <glib.h>
+#include <gst/gst.h>
+#endif
 
-void audio_deinit(void);
+typedef struct {
+#ifndef IS_TEST_ENVIRONMENT
+    GstElement *pipeline;
+    GstElement *source;
+    GstElement *volume_element;
+    GMainLoop *loop;
+#else
+    void *pipeline;
+    void *source;
+    void *volume_element;
+    void *loop;
+#endif
+    bool is_playing;
+    int current_track; 
+    double current_volume; 
+} AudioManager;
 
-bool audio_play(const char *file);
+void audio_manager_init(AudioManager *am, void *loop);
+
+void audio_manager_start_playlist(AudioManager *am, const char *initial_file);
+
+void audio_manager_stop(AudioManager *am);
+
+void audio_manager_set_volume(AudioManager *am, int volume_percent);
+
+void audio_manager_cleanup(AudioManager *am);
+
+void audio_init(void);
+
+void audio_play(const char *filename);
+
+void audio_play_default(void);
 
 void audio_stop(void);
 
-bool audio_set_volume(uint8_t volume);
-
-audio_state_t audio_get_state(void);
-
 bool audio_is_playing(void);
 
-uint8_t audio_get_volume(void);
+void audio_set_volume(int volume);
 
-const char *audio_get_current_file(void);
-
-const char *audio_get_last_error(void);
+#ifdef IS_TEST_ENVIRONMENT
+    #include "audio_manager.c"
+#endif
 
 #endif

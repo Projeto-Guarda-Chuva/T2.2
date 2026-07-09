@@ -1,51 +1,39 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 #include "audio_manager.h"
+#include "server.h"
 
+#ifndef PRODUCTION_ENV
+    #define IS_TEST_ENVIRONMENT
+#endif
 
-int main(void) {
-    printf("========================================\n");
-    printf("   Teste do Atuador de Áudio\n");
-    printf("========================================\n\n");
+#ifndef IS_TEST_ENVIRONMENT
+#include <glib.h>
+#endif
 
-    if (!audio_init()) {
-        printf("Erro ao inicializar o atuador!\n");
-        printf("Motivo: %s\n", audio_get_last_error());
+int main(int argc, char **argv) {
+    HttpServer server;
+
+    audio_init();
+
+#ifndef IS_TEST_ENVIRONMENT
+    GMainLoop *loop = g_main_loop_new(NULL, FALSE);
+
+    if (!server_start(&server, 8082, NULL)) {
+        fprintf(stderr, "[ERROR] Falha ao iniciar o servidor HTTP.\n");
+        g_main_loop_unref(loop);
         return 1;
     }
 
-    printf("Atuador inicializado com sucesso!\n");
+    printf("[INFO] Servidor rodando na porta 8082. Aguardando JSON via POST...\n");
+    g_main_loop_run(loop);
 
-    if (!audio_set_volume(70)) {
-        printf("Erro ao definir volume!\n");
-        printf("%s\n", audio_get_last_error());
-    }
-
-    printf("Volume atual: %u%%\n", audio_get_volume());
-
-    printf("\nIniciando reprodução...\n");
-
-    if (!audio_play("../audios/alerta.mp3")) {
-        printf("Erro ao reproduzir!\n");
-        printf("%s\n", audio_get_last_error());
-
-        audio_deinit();
-        return 1;
-    }
-
-    printf("Arquivo atual: %s\n", audio_get_current_file());
-
-    printf("\nPressione ENTER para parar o áudio...\n");
-
-    getchar();
-
-    audio_stop();
-
-    printf("Áudio parado.\n");
-
-    audio_deinit();
-
-    printf("Recursos liberados.\n");
+    server_stop(&server);
+    g_main_loop_unref(loop);
+#else
+    server_start(&server, 8080, NULL);
+    server_stop(&server);
+#endif
 
     return 0;
 }

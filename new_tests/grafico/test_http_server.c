@@ -15,7 +15,7 @@ void setUp(void) {
 void tearDown(void) {
     results_record(Unity.CurrentTestName, (int)Unity.CurrentTestFailed);
 
-    char line[400];
+    char line[600];
     snprintf(line, sizeof(line),
              "process_command=%dx ultimo='%s' resposta='%s' send_500=%dx",
              g_http_spy.process_command_count,

@@ -1,168 +1,204 @@
+#ifndef AUDIO_MANAGER_C_GUARD
+#define AUDIO_MANAGER_C_GUARD
+
 #include "audio_manager.h"
-
-#include <gst/gst.h>
-
-#include <glib.h>
-#include <limits.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-static GstElement *player = NULL;
+// Macros para emular o comportamento do ESP_LOG no Linux da Jetson:
+#define ESP_LOGI(tag, fmt, ...) printf("[%s] " fmt "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGE(tag, fmt, ...) fprintf(stderr, "[%s] ERR: " fmt "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGW(tag, fmt, ...) printf("[%s] WARN: " fmt "\n", tag, ##__VA_ARGS__)
 
-static audio_state_t state = AUDIO_IDLE;
+#ifndef PRODUCTION_ENV
+    #define IS_TEST_ENVIRONMENT
+#endif
 
-static uint8_t current_volume = 100;
+static const char *TAG = "AUDIO_MANAGER";
 
-static char current_file[PATH_MAX] = "";
+static const char *TRACKS[] = {
+    "audios/Modo - Água Viva.mp3",
+    "audios/Modo - Pôr do Sol.mp3"
+};
 
-static char last_error[256] = "";
+static AudioManager global_am;
+static bool is_initialized = false;
+static int current_volume_int = 100;
 
 
-static void audio_set_error(const char *msg) {
-    snprintf(last_error, sizeof(last_error), "%s", msg);
-    state = AUDIO_ERROR;
-}
-
-
-bool audio_init(void) {
-    if(player) {
-        return true;
+#ifndef IS_TEST_ENVIRONMENT
+static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data) {
+    AudioManager *am = (AudioManager *)data;
+    switch (GST_MESSAGE_TYPE(msg)) {
+        case GST_MESSAGE_EOS: {
+            ESP_LOGI(TAG, "Fim da faixa alcançado. Alternando playlist...");
+            am->current_track = 1 - am->current_track; 
+            gst_element_set_state(am->pipeline, GST_STATE_READY);
+            gchar *absolute_path = g_canonicalize_filename(TRACKS[am->current_track], NULL);
+            gchar *uri = g_filename_to_uri(absolute_path, NULL, NULL);
+            g_object_set(G_OBJECT(am->pipeline), "uri", uri, NULL);
+            g_free(absolute_path); g_free(uri);
+            g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
+            gst_element_set_state(am->pipeline, GST_STATE_PLAYING);
+            break;
+        }
+        case GST_MESSAGE_ERROR: {
+            gchar *debug; GError *error;
+            gst_message_parse_error(msg, &error, &debug);
+            ESP_LOGE(TAG, "Erro no GStreamer: %s!", error->message);
+            g_error_free(error); g_free(debug);
+            am->is_playing = false;
+            break;
+        }
+        default: break;
     }
+    return TRUE;
+}
+#endif
 
+
+void audio_manager_init(AudioManager *am, void *loop) {
+#ifndef IS_TEST_ENVIRONMENT
     gst_init(NULL, NULL);
-    player = gst_element_factory_make("playbin", "audio-player");
-
-    if(player == NULL) {
-        audio_set_error("Não foi possível criar o playbin!");
-        return false;
-    }
-
-    g_object_set(player, "volume", (gdouble)current_volume / 100.0, NULL);
-    state = AUDIO_IDLE;
-
-    current_file[0] = '\0';
-    last_error[0] = '\0';
-
-    return true;
+    am->loop = (GMainLoop *)loop;
+    am->pipeline = gst_element_factory_make("playbin", "audio-player");
+    am->source = am->pipeline;
+    GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(am->pipeline));
+    gst_bus_add_watch(bus, bus_call, am);
+    gst_object_unref(bus);
+#endif
+    (void)loop;
+    am->is_playing = false;
+    am->current_track = 0;
+    am->current_volume = 1.0;
 }
 
 
-void audio_deinit(void) {
-    if(player == NULL) {
+void audio_manager_start_playlist(AudioManager *am, const char *initial_file) {
+    if (am->is_playing) {
+        audio_manager_stop(am);
+    }
+    
+    if (initial_file && strcmp(initial_file, TRACKS[1]) == 0) {
+        am->current_track = 1;
+    } else {
+        am->current_track = 0;
+    }
+
+
+#ifndef IS_TEST_ENVIRONMENT
+    const char *file_to_play = (initial_file != NULL && strlen(initial_file) > 0) ? initial_file : TRACKS[am->current_track];
+    gst_element_set_state(am->pipeline, GST_STATE_READY);
+    gchar *absolute_path = g_canonicalize_filename(file_to_play, NULL);
+    gchar *uri = g_filename_to_uri(absolute_path, NULL, NULL);
+    g_object_set(G_OBJECT(am->pipeline), "uri", uri, NULL);
+    g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
+    g_free(absolute_path); g_free(uri);
+    gst_element_set_state(am->pipeline, GST_STATE_PLAYING);
+#endif
+    am->is_playing = true;
+}
+
+
+void audio_manager_stop(AudioManager *am) {
+#ifndef IS_TEST_ENVIRONMENT
+    gst_element_set_state(am->pipeline, GST_STATE_NULL);
+#endif
+    am->is_playing = false;
+}
+
+
+void audio_manager_set_volume(AudioManager *am, int volume_percent) {
+    if (volume_percent < 0) volume_percent = 0;
+    if (volume_percent > 100) volume_percent = 100;
+    am->current_volume = (double)volume_percent / 100.0;
+#ifndef IS_TEST_ENVIRONMENT
+    g_object_set(G_OBJECT(am->pipeline), "volume", am->current_volume, NULL);
+#endif
+}
+
+
+void audio_init(void) {
+    audio_manager_init(&global_am, NULL);
+    is_initialized = true;
+    current_volume_int = 100;
+    
+    ESP_LOGI(TAG, "Inicializando Atuador de Audio...");
+    ESP_LOGI(TAG, "Componente carregado com sucesso.");
+    ESP_LOGI(TAG, "Volume inicial configurado em 100%%");
+}
+
+
+void audio_play(const char *filename) {
+    if (!is_initialized) {
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return;
     }
 
-    gst_element_set_state(player, GST_STATE_NULL);
-    gst_object_unref(player);
-    player = NULL;
+    if (filename == NULL || strlen(filename) == 0) {
+        ESP_LOGE(TAG, "Arquivo invalido para reproducao.");
+        return;
+    }
 
-    current_file[0] = '\0';
-    last_error[0] = '\0';
-
-    state = AUDIO_IDLE;
+    ESP_LOGI(TAG, "Reproduzindo arquivo: %s", filename);
+    audio_manager_start_playlist(&global_am, filename);
 }
 
 
-bool audio_play(const char *file) {
-    if(player == NULL) {
-        audio_set_error("Player não inicializado!");
-        return false;
+void audio_play_default(void) {
+    if (!is_initialized) {
+        ESP_LOGW(TAG, "Componente nao inicializado!");
+        return;
     }
 
-    if(file == NULL || strlen(file) == 0) {
-        audio_set_error("Nome do arquivo inválido!");
-        return false;
-    }
-
-    if(audio_is_playing()) {
-        audio_stop();
-    }
-
-    char absolute_path[PATH_MAX];
-    if(realpath(file, absolute_path) == NULL) {
-        audio_set_error("Arquivo não encontrado!");
-        return false;
-    }
-
-    gchar *uri = gst_filename_to_uri(absolute_path, NULL);
-    if(uri == NULL) {
-        audio_set_error("Não foi possível criar a URI!");
-        return false;
-    }
-
-    snprintf(current_file, sizeof(current_file), "%s", absolute_path);
-    g_object_set(player, "uri", uri, NULL);
-    g_free(uri);
-
-    GstStateChangeReturn ret;
-    ret = gst_element_set_state(player, GST_STATE_PLAYING);
-
-    if(ret == GST_STATE_CHANGE_FAILURE) {
-        audio_set_error("Falha ao iniciar reprodução!");
-        return false;
-    }
-
-    state = AUDIO_PLAYING;
-    return true;
+    audio_play("default.mp3");
 }
 
 
 void audio_stop(void) {
-    if(player == NULL) {
+    if (!is_initialized) {
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return;
     }
 
-    gst_element_set_state(player, GST_STATE_NULL);
-    current_file[0] = '\0';
-    state = AUDIO_STOPPED;
-}
-
-
-bool audio_set_volume(uint8_t volume) {
-    if(player == NULL) {
-        audio_set_error("Player não inicializado.");
-        return false;
+    if (!global_am.is_playing) {
+        ESP_LOGW(TAG, "Nenhum audio esta sendo reproduzido.");
+        return;
     }
 
-    if(volume > 100) {
-        volume = 100;
-    }
-
-    current_volume = volume;
-    g_object_set(player, "volume", (gdouble)volume / 100.0, NULL);
-
-    return true;
-}
-
-
-audio_state_t audio_get_state(void) {
-    return state;
+    ESP_LOGI(TAG, "Parando audio...");
+    audio_manager_stop(&global_am);
 }
 
 
 bool audio_is_playing(void) {
-    if(player == NULL) {
+    if (!is_initialized) {
+        ESP_LOGW(TAG, "Componente nao inicializado!");
         return false;
     }
 
-    GstState gst_state;
-    gst_element_get_state(player, &gst_state, NULL, 0);
-
-    return gst_state == GST_STATE_PLAYING;
+    return global_am.is_playing;
 }
 
 
-uint8_t audio_get_volume(void) {
-    return current_volume;
+void audio_set_volume(int volume) {
+    if (!is_initialized) {
+        ESP_LOGW(TAG, "Componente nao inicializado!");
+        return;
+    }
+
+    uint8_t volume_u8 = (uint8_t)volume;
+
+    if (volume_u8 > 100) {
+        ESP_LOGW(TAG, "Volume %d invalido! Ajustando para 100.", volume_u8);
+        audio_manager_set_volume(&global_am, 100);
+        current_volume_int = 100;
+        return;
+    }
+
+    ESP_LOGI(TAG, "Alterando volume de %d para %d", current_volume_int, volume_u8);
+    audio_manager_set_volume(&global_am, volume_u8);
+    current_volume_int = volume_u8;
 }
 
-
-const char *audio_get_current_file(void) {
-    return current_file;
-}
-
-
-const char *audio_get_last_error(void) {
-    return last_error;
-}
+#endif
