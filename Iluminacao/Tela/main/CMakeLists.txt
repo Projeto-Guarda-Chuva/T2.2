@@ -6,9 +6,11 @@ idf_component_register(
         "source/http_server.c"
         "source/wifi_manager.c"
         "source/esp_lcd_jd9365.c"
+        "source/led_sync.c"
     INCLUDE_DIRS
         "header"
     REQUIRES
+        mdns
         nvs_flash
         esp_wifi
         esp_netif

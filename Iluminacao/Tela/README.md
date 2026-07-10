@@ -1,6 +1,5 @@
 # ESP32-P4 — Controle de Display
 
-
 ## Todo novo terminal para ativar o ambiente
 
 ```bash
@@ -12,6 +11,9 @@ idf.py erase-flash
 
 ## Compilar
 
+
+
+
 ```bash
 
 # so na primeira vez ou ao trocar de chip
@@ -20,6 +22,10 @@ idf.py set-target esp32p4
 # compilar
 idf.py build
 ```
+
+
+
+
 ---
 
 ## Gravar e abrir monitor serial
@@ -44,20 +50,18 @@ idf.py build
 
 ---
 
-
 ## Protocolo HTTP
 
 Enviar `POST` para `http://<IP_DA_PLACA>/cmd` com JSON:
 
-| id | Acao                        |
-|----|-----------------------------|
-| 10 | Cor customizada `{r,g,b}`   |
-| 11 | Vermelho                    |
-| 12 | Verde                       |
-| 13 | Azul                        |
-| 14 | Preto                       |
-| 15 | Branco                      |
-
+| id | Acao                       |
+| -- | -------------------------- |
+| 10 | Cor customizada`{r,g,b}` |
+| 11 | Vermelho                   |
+| 12 | Verde                      |
+| 13 | Azul                       |
+| 14 | Preto                      |
+| 15 | Branco                     |
 
 Exemplo:
 

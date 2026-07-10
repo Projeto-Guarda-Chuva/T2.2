@@ -10,6 +10,7 @@
 #include "wifi_manager.h"
 #include "http_server.h"
 #include "display_manager.h"
+#include "led_sync.h"
 
 static const char *TAG = "MAIN";
 
@@ -50,6 +51,7 @@ void app_main(void)
     ESP_LOGI(TAG, "Aguardando Wi-Fi");
     vTaskDelay(pdMS_TO_TICKS(8000));
 
+    led_sync_init();
     start_web_server();
 
     ESP_LOGI(TAG, "Sistema pronto! Aguardando comandos");
